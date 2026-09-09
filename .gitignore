@@ -1,0 +1,36 @@
+# Variables de entorno — nunca se commitean
+.env
+.env.local
+*.env
+!.env.example
+
+# Dependencias
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Builds y artefactos
+dist/
+build/
+.next/
+target/
+
+# Bases de datos y volúmenes locales
+*.sqlite
+*.sqlite3
+*.db
+pgdata/
+postgres-data/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+logs/
