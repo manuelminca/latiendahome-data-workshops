@@ -79,33 +79,66 @@ Tres términos que vas a oír hoy:
 Aquí está el truco de todo el montaje. Hay dos mecanismos y los dos son solo
 archivos de texto.
 
-### `CLAUDE.md` — lo que siempre debe saber
+### `AGENTS.md` — lo que siempre debe saber
 
-Un archivo `CLAUDE.md` en una carpeta se lee **automáticamente** cuando trabajas
-ahí. No hay que mencionarlo ni pedirlo: está siempre.
+Las instrucciones que la IA tiene que tener presentes siempre viven en un
+archivo `AGENTS.md`. Es un nombre estándar: lo entienden varias herramientas de
+IA (no solo Claude Code), así que escribimos las reglas una sola vez y sirven
+para todas.
 
 Y funciona **en cascada**. Ahora mismo, en este taller, hay dos:
 
 ```
-CLAUDE.md                                    ← reglas de todo el repositorio
+AGENTS.md                                    ← reglas de todo el repositorio
+CLAUDE.md                                    ← solo apunta a AGENTS.md
 └── workshops/01-ia-contexto-openspec/
-    └── CLAUDE.md                            ← reglas de este ejercicio
+    ├── AGENTS.md                            ← reglas de este ejercicio
+    └── CLAUDE.md                            ← solo apunta a AGENTS.md
 ```
 
-Cuando trabajas en la carpeta del taller, Claude lee los dos: lo general y lo
-específico. Ábrelos ahora, están escritos para que los leas tú también. Vas a ver
-que el de la raíz dice cosas como "explica lo que haces en lenguaje llano" y que
-el del taller lleva las restricciones del ejercicio.
+Ábrelos ahora, están escritos para que los leas tú también. Vas a ver que el de
+la raíz dice cosas como "explica lo que haces en lenguaje llano" y que el del
+taller lleva las restricciones del ejercicio. Si los dos dicen cosas distintas,
+manda el del taller, que es el más específico.
+
+### `CLAUDE.md` — la puerta de entrada
+
+Claude Code no busca `AGENTS.md` por su cuenta: el archivo que lee
+**automáticamente** es `CLAUDE.md`. Por eso cada `AGENTS.md` tiene al lado un
+`CLAUDE.md` muy corto cuyo único trabajo es señalarlo:
+
+```markdown
+Todas las instrucciones para agentes de este repositorio están en [`AGENTS.md`](AGENTS.md).
+
+@AGENTS.md
+```
+
+La línea `@AGENTS.md` es la importante: le dice a Claude Code "carga aquí el
+contenido de ese archivo". El resultado es el mismo que si las reglas
+estuvieran escritas dentro del `CLAUDE.md`. No hay que mencionarlo ni pedirlo:
+está siempre.
+
+Cuándo se carga cada uno:
+
+- El de la **raíz**, nada más abrir Claude Code en la carpeta del repositorio.
+- El de la **carpeta del taller**, en cuanto Claude empieza a trabajar con
+  archivos de esa carpeta. A partir de ahí tiene los dos: lo general y lo
+  específico.
+
+Por eso hay que abrir Claude Code en la **raíz del repositorio** y no dentro de
+la carpeta del taller: si lo abres dentro, Claude Code no sigue la referencia
+del `CLAUDE.md` de la raíz y se queda sin las reglas generales.
 
 Eso significa algo que conviene entender bien: **las restricciones del ejercicio
 no son un texto decorativo del enunciado, son contexto activo**. Claude las
 respeta porque están en un archivo que lee siempre. Si te pones a proponer una
 arquitectura que se las salta, te lo va a decir.
 
-Lo que va bien en un `CLAUDE.md`: convenciones, restricciones, dónde está cada
+Lo que va bien en un `AGENTS.md`: convenciones, restricciones, dónde está cada
 cosa, cómo se trabaja aquí, qué no hacer. Lo que no: documentación larga que
 solo hace falta a veces (para eso, un archivo aparte que se lea cuando toque) y
-cualquier secreto o contraseña.
+cualquier secreto o contraseña. Y en el `CLAUDE.md`, nada más que la referencia:
+si alguna vez añades una regla, va al `AGENTS.md`.
 
 ### Las skills — lo que debe saber *a veces*
 
@@ -125,7 +158,7 @@ Este taller trae tres ya preparadas, y hoy las vas a usar sin escribir ninguna:
 Pruébalo cuando llegues al ejercicio: escribe *"me he liado con git, ayúdame"* y
 verás que responde siguiendo un guion. Ese guion es la skill.
 
-**Por qué existen las skills si ya existe el `CLAUDE.md`:** porque el contexto es
+**Por qué existen las skills si ya existe el `AGENTS.md`:** porque el contexto es
 limitado. Si metieras todo lo que Claude podría llegar a necesitar en un único
 archivo que se lee siempre, lo llenarías de cosas irrelevantes el 95% del tiempo.
 Las skills separan "lo que siempre aplica" de "lo que aplica en una situación

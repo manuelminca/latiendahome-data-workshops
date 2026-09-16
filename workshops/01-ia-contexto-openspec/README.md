@@ -34,10 +34,12 @@ parte del ejercicio.
 
 Lee la [guía de conceptos](guias/01-conceptos.md) y lo comentamos juntos. Qué es
 un modelo, qué es el contexto, qué es un repositorio y cómo se le da información
-a Claude Code con `CLAUDE.md` y con skills.
+a Claude Code con `AGENTS.md` (que Claude carga a través de `CLAUDE.md`) y con
+skills.
 
-Abre mientras tanto los dos `CLAUDE.md` de este repositorio — el de la raíz y
-el de esta carpeta. Están escritos para que los leas.
+Abre mientras tanto los dos `AGENTS.md` de este repositorio — el de la raíz y
+el de esta carpeta. Están escritos para que los leas. (Cada `CLAUDE.md` solo
+apunta a su `AGENTS.md`.)
 
 ### Bloque 1 · Preparar el terreno (15 min)
 
@@ -189,8 +191,9 @@ para el mismo enunciado, y esa es justo la parte interesante.
 ## Lo que te quieres llevar del taller
 
 - El resultado de una IA depende sobre todo de la información que le das.
-- El `CLAUDE.md` es contexto que se lee siempre; las skills, contexto que se
-  carga cuando hace falta. Los dos son archivos de texto normales en tu repositorio.
+- El `AGENTS.md` es contexto que se lee siempre (Claude Code llega a él a
+  través de `CLAUDE.md`); las skills, contexto que se carga cuando hace falta.
+  Todos son archivos de texto normales en tu repositorio.
 - Acordar por escrito qué se va a hacer, y revisarlo, es más barato que corregir
   código ya escrito.
 - El repositorio no es donde guardas el código: es donde vive el contexto que
@@ -209,5 +212,5 @@ mano.
 - [Conceptos](guias/01-conceptos.md) — modelos, contexto, repositorios, skills
 - [OpenSpec](guias/02-openspec.md) — para qué sirve y cómo se usa
 - [Enunciado de la aplicación](brief/app-de-notas.md) — qué hay que construir
-- [Reglas del ejercicio](CLAUDE.md) — las restricciones obligatorias
+- [Reglas del ejercicio](AGENTS.md) — las restricciones obligatorias
 - [Glosario](../../recursos/glosario.md) — si sale una palabra que no conoces

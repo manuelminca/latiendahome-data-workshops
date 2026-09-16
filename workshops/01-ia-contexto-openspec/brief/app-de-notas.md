@@ -75,7 +75,7 @@ No hace falta que sea bonita, pero sí que se entienda:
 
 ## Restricciones técnicas
 
-Están en el [`CLAUDE.md`](../CLAUDE.md) de este taller y son obligatorias.
+Están en el [`AGENTS.md`](../AGENTS.md) de este taller y son obligatorias.
 Resumidas: un solo comando para levantarlo, configuración en variables de
 entorno, persistencia real en base de datos relacional, README que funcione, y
 la opción más simple que resuelva el problema.

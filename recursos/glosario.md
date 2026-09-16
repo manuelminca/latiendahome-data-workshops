@@ -24,9 +24,14 @@ probable.
 **Agente** — Una IA que además de responder puede hacer cosas: leer archivos,
 ejecutar comandos, editar código. Claude Code es un agente.
 
-**CLAUDE.md** — Un archivo de texto que Claude Code lee automáticamente al
-trabajar en esa carpeta. Ahí van las reglas y convenciones del proyecto. Se leen
-en cascada: el de la raíz más el de la subcarpeta donde estés.
+**AGENTS.md** — Un archivo de texto con las reglas y convenciones del proyecto
+para la IA. Es un nombre estándar que entienden varias herramientas. Se leen en
+cascada: el de la raíz más el de la subcarpeta donde estés.
+
+**CLAUDE.md** — El archivo que Claude Code lee automáticamente al trabajar en
+una carpeta. En estos talleres solo contiene una referencia (`@AGENTS.md`) que
+hace que Claude cargue el `AGENTS.md` de al lado. Las reglas no se escriben
+aquí, sino en el `AGENTS.md`.
 
 **Skill** — Un manual de instrucciones para una tarea concreta que Claude carga
 solo cuando hace falta. Vive en `.claude/skills/<nombre>/SKILL.md`.

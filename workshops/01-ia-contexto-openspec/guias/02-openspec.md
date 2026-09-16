@@ -80,7 +80,7 @@ determina cómo va a salir el resto.
 Preguntas útiles para revisarla:
 
 - ¿Cubre todos los casos del [enunciado](../brief/app-de-notas.md)?
-- ¿Cumple las cinco restricciones del [`CLAUDE.md`](../CLAUDE.md) del taller?
+- ¿Cumple las cinco restricciones del [`AGENTS.md`](../AGENTS.md) del taller?
 - ¿Hay algo aquí que yo no sabría explicar? Si lo hay, pregunta qué es y por qué.
 - ¿Hay algo de más? Recuerda la restricción de "lo más simple que funcione".
 

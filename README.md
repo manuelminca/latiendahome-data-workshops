@@ -9,30 +9,27 @@ necesitas saber en el momento en que lo necesitas.
 
 ## Talleres disponibles
 
-| Taller | Qué aprendes | Duración |
-|---|---|---|
-| [01 · IA, contexto y OpenSpec](workshops/01-ia-contexto-openspec/) | Qué es un modelo, qué es el contexto, cómo se estructura un repositorio para que la IA trabaje bien, y construir una aplicación completa de principio a fin con OpenSpec | ~3 h |
+
+| Taller                                                             | Qué aprendes                                                                                                                                                             | Duración |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| [01 · IA, contexto y OpenSpec](workshops/01-ia-contexto-openspec/) | Qué es un modelo, qué es el contexto, cómo se estructura un repositorio para que la IA trabaje bien, y construir una aplicación completa de principio a fin con OpenSpec | ~3 h     |
+
 
 ## Antes de empezar
 
 1. **Clona el repositorio** (una sola vez):
-
-   ```bash
+  ```bash
    git clone https://github.com/magashops/latiendahome-data-workshops.git
-   ```
-
+  ```
 2. **Crea tu rama.** Nunca trabajes directamente sobre `main`. Cada participante
-   tiene la suya, con el número de taller y su nombre:
-
-   ```bash
-   git checkout -b taller1/manuel
-   ```
-
+ tiene la suya, con el número de taller y su nombre:
+  ```bash
+   git checkout -b taller1/<nombre>
+  ```
 3. **Abre Claude Code** (la aplicación de escritorio), ve a la pestaña **Code**,
-   elige **Local** y selecciona **la carpeta raíz del repositorio** — no la
-   carpeta del taller. Esto importa: es lo que hace que las skills y el contexto
-   común estén disponibles.
-
+ elige **Local** y selecciona **la carpeta raíz del repositorio** — no la
+ carpeta del taller. Esto importa: es lo que hace que las skills y el contexto
+ común estén disponibles.
 4. Entra en la carpeta del taller que toque y sigue su `README.md`.
 
 ## Qué hay en cada sitio
@@ -51,7 +48,8 @@ está cada cosa:
 ```
 workshops/NN-nombre/
 ├── README.md      El guion de la sesión: qué haces y en qué orden
-├── CLAUDE.md      Las reglas del ejercicio (las lee la IA automáticamente)
+├── AGENTS.md      Las reglas del ejercicio (las lee la IA automáticamente)
+├── CLAUDE.md      Solo apunta a AGENTS.md
 ├── guias/         Material de referencia: preparación, conceptos, herramientas
 ├── brief/         Qué hay que construir
 └── proyecto/      Tu espacio de trabajo, vacío al empezar

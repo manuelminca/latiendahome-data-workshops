@@ -11,7 +11,7 @@ resultado completo, y solo arregla lo que la persona te pida después.
 
 ## Cómo hacerlo
 
-Lee el `CLAUDE.md` de la carpeta del taller y el brief que hay en `brief/`. Esas
+Lee el `AGENTS.md` de la carpeta del taller y el brief que hay en `brief/`. Esas
 son las restricciones reales; lo que sigue es el mínimo común a todos los
 talleres. Si el taller pide algo más, añádelo a la revisión.
 
