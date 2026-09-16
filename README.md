@@ -19,7 +19,7 @@ necesitas saber en el momento en que lo necesitas.
 
 1. **Clona el repositorio** (una sola vez):
   ```bash
-   git clone https://github.com/magashops/latiendahome-data-workshops.git
+   git clone https://github.com/manuelminca/latiendahome-data-workshops.git
   ```
 2. **Crea tu rama.** Nunca trabajes directamente sobre `main`. Cada participante
  tiene la suya, con el número de taller y su nombre:

@@ -146,7 +146,7 @@ común, así que en la revisión se sabe qué ha hecho cada uno.
 Clónalo donde guardes tus proyectos:
 
 ```bash
-git clone https://github.com/magashops/latiendahome-data-workshops.git
+git clone https://github.com/manuelminca/latiendahome-data-workshops.git
 ```
 
 Apunta en qué carpeta te lo has dejado: el día del taller vas a tener que
