@@ -29,8 +29,9 @@ En este taller **no hace falta Git, ni la terminal, ni saber programar**.
 3. Descomprime el archivo en tu carpeta de **Documentos**. Te quedará una
    carpeta llamada `latiendahome-data-workshops-main`.
 
-Si ya lo tienes clonado del taller 1, te vale esa copia: actualízala con
-`git pull`.
+Aunque ya tengas el repositorio del taller 1, descarga el ZIP igualmente. Tu
+copia del taller 1 está en tu rama `taller1/<nombre>`, que no trae los
+materiales del taller 2.
 
 ## 3. Comprueba que funciona
 
