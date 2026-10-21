@@ -1,0 +1,1094 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code en tu día a día</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#F1F3F6;
+  --sheet:#FFFFFF;
+  --ink:#16202E;
+  --muted:#5B6778;
+  --rule:#CDD3DC;
+  --grid:rgba(47,91,211,.07);
+  --accent:#2F5BD3;
+  --accent-soft:#E3EAFB;
+  --marker:#F2C230;
+  --marker-ink:#16202E;
+  --code-bg:#E9EDF3;
+
+  --display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", Roboto, system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* escala, relativa al ancho de la diapositiva */
+  --fs-hero:5.6cqi;
+  --fs-h2:3.5cqi;
+  --fs-h3:1.75cqi;
+  --fs-lead:1.95cqi;
+  --fs-body:1.55cqi;
+  --fs-small:1.2cqi;
+  --fs-eyebrow:1.05cqi;
+  --pad:4.6cqi;
+  --gap:2.2cqi;
+  --bar-h:52px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E141C;
+    --sheet:#161E29;
+    --ink:#E6EAF0;
+    --muted:#98A3B3;
+    --rule:#2C3746;
+    --grid:rgba(127,160,255,.06);
+    --accent:#86A6FF;
+    --accent-soft:#1D2A45;
+    --marker:#F2C230;
+    --marker-ink:#16202E;
+    --code-bg:#1F2835;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E141C;
+  --sheet:#161E29;
+  --ink:#E6EAF0;
+  --muted:#98A3B3;
+  --rule:#2C3746;
+  --grid:rgba(127,160,255,.06);
+  --accent:#86A6FF;
+  --accent-soft:#1D2A45;
+  --marker:#F2C230;
+  --marker-ink:#16202E;
+  --code-bg:#1F2835;
+}
+
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--body);
+  -webkit-font-smoothing:antialiased;
+}
+*{box-sizing:border-box}
+h1,h2,h3,p,ul,ol,dl,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+code,.mono{font-family:var(--mono)}
+
+/* ---------- modo presentación ---------- */
+.deck{
+  height:100%;
+  display:grid;
+  grid-template-rows:1fr var(--bar-h);
+}
+.stage{
+  position:relative;
+  display:grid;
+  place-items:center;
+  padding:16px;
+  min-height:0;
+}
+.slide{
+  container-type:inline-size;
+  width:min(100%, calc((100dvh - var(--bar-h) - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)) * 16 / 9));
+  aspect-ratio:16/9;
+  background:var(--sheet);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:2.5cqi 2.5cqi;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  box-shadow:0 1px 2px rgba(22,32,46,.06), 0 12px 40px -18px rgba(22,32,46,.25);
+  overflow:hidden;
+  position:absolute;
+  display:none;
+}
+.slide.is-current{display:block}
+.slide-inner{
+  height:100%;
+  padding:var(--pad);
+  display:flex;
+  flex-direction:column;
+  gap:var(--gap);
+}
+
+/* cabecera tipo ficha de montaje */
+.sheet-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:2cqi;
+  font-size:var(--fs-eyebrow);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding-bottom:1cqi;
+  border-bottom:1px solid var(--rule);
+}
+.sheet-head b{color:var(--accent);font-weight:700}
+.sheet-head .ref{font-family:var(--mono);letter-spacing:.04em;text-transform:none}
+
+h1,h2,h3{font-family:var(--display);text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:var(--fs-hero);font-weight:800;line-height:.98}
+h2{font-size:var(--fs-h2);font-weight:700;line-height:1.05;max-width:26ch}
+h3{font-size:var(--fs-h3);font-weight:700;line-height:1.15}
+.lead{font-size:var(--fs-lead);line-height:1.35;max-width:48ch;color:var(--ink)}
+p,li,dt,dd,td,th{font-size:var(--fs-body);line-height:1.45}
+.muted{color:var(--muted)}
+.small{font-size:var(--fs-small)}
+.hl{background:linear-gradient(transparent 55%, color-mix(in srgb, var(--marker) 70%, transparent) 55%);padding:0 .1em}
+code{
+  font-size:.9em;
+  background:var(--code-bg);
+  padding:.08em .35em;
+  border-radius:3px;
+}
+
+.cols{display:grid;grid-template-columns:repeat(var(--n,2), minmax(0,1fr));gap:3cqi;flex:1;min-height:0}
+.stack{display:flex;flex-direction:column;gap:1.4cqi}
+
+.bullets{display:flex;flex-direction:column;gap:1.1cqi}
+.bullets li{padding-left:1.8cqi;position:relative}
+.bullets li::before{
+  content:"";position:absolute;left:0;top:.62em;
+  width:.8cqi;height:.8cqi;border:2px solid var(--accent);border-radius:50%;
+}
+
+.panel{
+  border:1px solid var(--rule);
+  border-radius:4px;
+  background:var(--sheet);
+  padding:2cqi;
+  display:flex;flex-direction:column;gap:1cqi;
+}
+.panel.tint{background:var(--accent-soft);border-color:transparent}
+.panel.mark{background:var(--marker);border-color:var(--marker);color:var(--marker-ink)}
+.panel.mark .label{color:var(--marker-ink)}
+.panel.mark code{background:rgba(22,32,46,.12);color:var(--marker-ink)}
+.label{
+  font-size:var(--fs-eyebrow);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--accent);
+  font-weight:700;
+}
+.tag{
+  display:inline-block;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.06em;
+  padding:.2em .6em;border-radius:99px;border:1px solid var(--accent);color:var(--accent);
+  white-space:nowrap;
+}
+.tag.solid{background:var(--accent);color:var(--sheet)}
+
+/* portada */
+.cover .slide-inner{justify-content:space-between}
+.cover-body{display:grid;grid-template-columns:1.25fr 1fr;gap:4cqi;align-items:end}
+.cover h1 span{color:var(--accent)}
+.parts{
+  border:1.5px solid var(--ink);
+  border-radius:4px;
+  padding:1.6cqi 2cqi;
+  font-size:var(--fs-small);
+}
+.parts h3{font-size:var(--fs-small);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1cqi}
+.parts ol{display:grid;grid-template-columns:auto 1fr;column-gap:1.4cqi;row-gap:.55cqi}
+.parts li{display:contents;font-size:var(--fs-small)}
+.parts .q{font-family:var(--mono);color:var(--accent);font-weight:600}
+.parts .n{font-size:var(--fs-small)}
+
+/* índice */
+.agenda{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2.4cqi 2cqi;flex:1;align-content:center}
+.agenda li{
+  border-top:3px solid var(--ink);
+  padding-top:1.1cqi;
+  display:flex;flex-direction:column;gap:.5cqi;
+}
+.agenda li.practice{border-top-color:var(--marker)}
+.agenda .num{font-family:var(--display);font-size:3cqi;font-weight:800;color:var(--accent);line-height:1}
+.agenda h3{font-size:var(--fs-h3)}
+
+/* tarjetas en rejilla */
+.cards{display:grid;grid-template-columns:repeat(var(--n,3), minmax(0,1fr));gap:1.6cqi;flex:1;min-height:0;align-content:start}
+.card{
+  border:1px solid var(--rule);border-radius:4px;background:var(--sheet);
+  padding:1.5cqi 1.7cqi;display:flex;flex-direction:column;gap:.7cqi;
+}
+.card.strong{border:1.5px solid var(--ink)}
+.card .tag{align-self:flex-start}
+.card p{font-size:var(--fs-small)}
+.card code,.panel code{white-space:nowrap}
+.card .where{font-family:var(--mono);font-size:var(--fs-eyebrow);color:var(--muted);margin-top:auto;padding-top:.6cqi;border-top:1px solid var(--rule)}
+
+/* modelos */
+.models{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6cqi;flex:1;min-height:0}
+.model{
+  position:relative;
+  border:1px solid var(--rule);border-radius:4px;background:var(--sheet);
+  padding:1.6cqi 1.7cqi;display:flex;flex-direction:column;gap:.8cqi;
+}
+.model.default{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.model .badge{position:absolute;top:0;right:1.4cqi;transform:translateY(-50%);background:var(--accent);color:var(--sheet)}
+.model h3{font-size:2.2cqi}
+.model p{font-size:var(--fs-small)}
+.model .eg{border-top:1px solid var(--rule);padding-top:.8cqi;color:var(--muted)}
+.model.default .eg{border-top-color:color-mix(in srgb, var(--accent) 35%, transparent)}
+.model .cost{margin-top:auto;display:flex;flex-direction:column;gap:.5cqi}
+.model .meter{height:.9cqi;background:var(--rule);border-radius:99px;overflow:hidden}
+.model .meter span{display:block;height:100%;width:var(--w);background:var(--accent);border-radius:99px}
+.model .cost small{font-size:var(--fs-eyebrow);color:var(--muted);font-family:var(--mono)}
+
+/* el depósito del contexto */
+.tank{
+  display:flex;height:5.2cqi;border:1.5px solid var(--ink);border-radius:4px;overflow:hidden;
+  font-size:var(--fs-eyebrow);font-weight:700;
+}
+.tank span{display:grid;place-items:center;width:var(--w);color:var(--sheet);white-space:nowrap;overflow:hidden}
+.tank .s1{background:var(--accent)}
+.tank .s2{background:color-mix(in srgb, var(--accent) 78%, var(--sheet))}
+.tank .s3{background:color-mix(in srgb, var(--accent) 58%, var(--sheet))}
+.tank .s4{background:color-mix(in srgb, var(--accent) 40%, var(--sheet));color:var(--ink)}
+.tank .s5{background:color-mix(in srgb, var(--accent) 22%, var(--sheet));color:var(--ink)}
+.tank .free{flex:1;color:var(--muted);font-weight:400;
+  background:repeating-linear-gradient(135deg, transparent 0 .8cqi, var(--grid) .8cqi 1.6cqi)}
+.tank-wrap{position:relative;padding-top:2.6cqi}
+.limit{position:absolute;left:var(--at);top:0;bottom:-.8cqi;border-left:2px dashed var(--ink)}
+.limit span{position:absolute;top:0;left:.8cqi;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;line-height:1}
+.fill{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1.4cqi}
+.fill li{display:flex;flex-direction:column;gap:.4cqi;font-size:var(--fs-small);line-height:1.35}
+.fill li b{font-family:var(--display);font-size:var(--fs-body);display:flex;align-items:center;gap:.7cqi}
+.fill i{display:inline-block;width:1.4cqi;height:1.4cqi;border-radius:2px;flex:none}
+.fill .s1 i{background:var(--accent)}
+.fill .s2 i{background:color-mix(in srgb, var(--accent) 78%, var(--sheet))}
+.fill .s3 i{background:color-mix(in srgb, var(--accent) 58%, var(--sheet))}
+.fill .s4 i{background:color-mix(in srgb, var(--accent) 40%, var(--sheet))}
+.fill .s5 i{background:color-mix(in srgb, var(--accent) 22%, var(--sheet))}
+
+/* dónde se ejecuta */
+.perm{display:grid;grid-template-columns:auto 1fr;gap:.6cqi 1.4cqi;align-items:baseline}
+.perm dt{font-weight:700;font-size:var(--fs-small)}
+.perm dd{margin:0;font-size:var(--fs-small);color:var(--muted)}
+.ctable{width:100%;border-collapse:collapse}
+.ctable th,.ctable td{font-size:var(--fs-small);text-align:left;padding:.75cqi 1.2cqi;border-bottom:1px solid var(--rule);vertical-align:top}
+.ctable thead th{font-family:var(--display);font-size:var(--fs-body);border-bottom:2px solid var(--ink)}
+.ctable tbody th{font-weight:700;color:var(--muted);width:30%}
+
+/* receta */
+.recipe{display:flex;flex-direction:column;flex:1;min-height:0;justify-content:center}
+.recipe li{display:grid;grid-template-columns:4cqi 20cqi 1fr;gap:1.6cqi;align-items:baseline;padding:1.05cqi 0;border-top:1px solid var(--rule)}
+.recipe li:last-child{border-bottom:1px solid var(--rule)}
+.recipe .rn{font-family:var(--display);font-weight:800;font-size:2.4cqi;color:var(--accent);line-height:1}
+.recipe b{font-family:var(--display);font-size:var(--fs-h3)}
+.recipe q{font-size:var(--fs-body);color:var(--muted);font-style:italic}
+.recipe.compact{flex:none;justify-content:flex-start}
+.recipe.compact li{grid-template-columns:3.4cqi 1fr;row-gap:.3cqi}
+.recipe.compact q{grid-column:2}
+
+/* bueno / malo */
+.compare{display:grid;grid-template-columns:1fr 1.7fr;gap:2.4cqi;flex:1;min-height:0}
+.quote{
+  font-size:var(--fs-body);line-height:1.45;
+  border-left:3px solid var(--rule);
+  padding:.4cqi 0 .4cqi 1.6cqi;
+}
+.quote.good{border-color:var(--accent)}
+.verdict{font-size:var(--fs-eyebrow);letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.verdict.bad{color:var(--muted)}
+.verdict.good{color:var(--accent)}
+.checklist{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:1.4cqi}
+.checklist li{border-top:1px solid var(--rule);padding-top:1cqi;font-size:var(--fs-small)}
+.checklist b{display:block;font-family:var(--display);font-size:var(--fs-body)}
+
+.scenario{
+  font-family:var(--mono);font-size:var(--fs-small);line-height:1.65;
+  background:var(--code-bg);border-radius:4px;padding:1.6cqi 2cqi;white-space:pre-wrap;
+}
+.scenario .k{color:var(--accent);font-weight:600}
+.scenario .h{color:var(--muted)}
+
+/* escalera de revisión */
+.ladder{display:flex;flex-direction:column;gap:.9cqi}
+.ladder li{display:grid;grid-template-columns:1fr auto;gap:1.4cqi;align-items:center;padding:1cqi 1.4cqi;border-radius:4px;border:1px solid var(--rule);font-size:var(--fs-small)}
+.ladder li:nth-child(2){border-color:var(--accent)}
+.ladder li:nth-child(3){background:var(--marker);border-color:var(--marker);color:var(--marker-ink)}
+.ladder li span:last-child{font-weight:700}
+
+/* un ejemplo de principio a fin */
+.flowcase{display:grid;grid-template-columns:1fr .85fr 1.25fr;gap:2cqi;align-items:stretch}
+.flowcase .panel{padding:1.5cqi 1.7cqi;gap:.8cqi}
+.xl{border-collapse:collapse;width:100%}
+.xl th,.xl td{border:1px solid var(--rule);padding:.2cqi .7cqi;text-align:left;font-size:var(--fs-small);line-height:1.3;white-space:nowrap}
+.xl thead th{background:var(--code-bg);font-size:var(--fs-eyebrow);font-weight:700}
+.xl tbody th{background:var(--code-bg);color:var(--muted);font-weight:400;text-align:center;width:2.6cqi}
+.xl .num{font-family:var(--mono)}
+.xl .new{background:color-mix(in srgb, var(--marker) 38%, var(--sheet))}
+
+/* pasos */
+.chain{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));gap:2.6cqi;align-items:stretch}
+.step{
+  position:relative;
+  border:1.5px solid var(--ink);
+  border-radius:4px;
+  padding:1.4cqi 1.5cqi;
+  display:flex;flex-direction:column;gap:.7cqi;
+  background:var(--sheet);
+}
+.step:not(:last-child)::after{
+  content:"→";position:absolute;right:-1.3cqi;top:50%;transform:translate(50%,-50%);
+  font-family:var(--mono);color:var(--accent);font-size:2cqi;font-weight:600;
+}
+.step .sn{font-family:var(--mono);color:var(--accent);font-weight:600;font-size:var(--fs-small)}
+.step h3{font-size:var(--fs-body)}
+.step p{font-size:var(--fs-small);color:var(--muted)}
+.step.tool{border-color:var(--accent);background:var(--accent-soft)}
+.chain.tight{gap:2cqi}
+.chain.tight .step{padding:1.1cqi 1.3cqi;gap:.4cqi}
+.chain.tight .step:not(:last-child)::after{right:-1cqi}
+.step.review{background:var(--marker);border-color:var(--marker);color:var(--marker-ink)}
+.step.review p,.step.review .sn{color:var(--marker-ink)}
+.exercises{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.4cqi}
+.exercises li{border-top:3px solid var(--ink);padding-top:1cqi;display:flex;flex-direction:column;gap:.4cqi}
+.exercises b{font-family:var(--display);font-size:var(--fs-h3)}
+.exercises span{font-size:var(--fs-small);color:var(--muted)}
+
+/* cierre */
+.takeaways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3cqi;flex:1;align-content:center}
+.takeaways li{display:flex;flex-direction:column;gap:1cqi}
+.takeaways h3{font-size:2.3cqi}
+.takeaways .num{font-family:var(--display);font-size:3.2cqi;font-weight:800;color:var(--accent);line-height:1}
+
+/* notas para quien presenta */
+.notes{display:none}
+.show-notes .slide.is-current .notes{
+  display:block;
+  position:absolute;left:0;right:0;bottom:0;
+  background:var(--ink);color:var(--sheet);
+  padding:1.4cqi var(--pad);
+  font-size:var(--fs-small);line-height:1.45;
+}
+
+/* barra inferior */
+.bar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:0 16px env(safe-area-inset-bottom,0px);
+  border-top:1px solid var(--rule);
+  font-size:13px;color:var(--muted);
+}
+.bar .where-am-i{display:flex;gap:10px;align-items:center;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .where-am-i b{color:var(--ink);font-weight:700}
+.progress{flex:1;height:3px;background:var(--rule);border-radius:2px;max-width:320px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
+.controls{display:flex;gap:6px;align-items:center}
+.controls .count{font-variant-numeric:tabular-nums;min-width:4.5em;text-align:center}
+.btn{
+  font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);
+  border-radius:4px;height:32px;min-width:32px;padding:0 10px;cursor:pointer;
+}
+.btn:hover{border-color:var(--accent)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.hint{font-size:12px}
+
+/* ---------- modo lectura (pantallas estrechas) ---------- */
+@media (max-width:760px){
+  :root{
+    --fs-hero:2.4rem;--fs-h2:1.6rem;--fs-h3:1.05rem;--fs-lead:1.1rem;
+    --fs-body:.98rem;--fs-small:.88rem;--fs-eyebrow:.7rem;--pad:20px;--gap:16px;
+  }
+  html,body{height:auto}
+  .deck{display:block;padding-inline:16px;padding-block:16px}
+  .stage{display:flex;flex-direction:column;gap:16px;padding:0}
+  .slide{display:block;position:static;width:100%;aspect-ratio:auto;background-size:20px 20px}
+  .slide-inner{height:auto}
+  .bar{display:none}
+  .cols,.cover-body,.compare,.chain,.takeaways,.checklist,.agenda,.cards,.models,.fill,.exercises,.flowcase{grid-template-columns:1fr}
+  .xl th,.xl td{padding:4px 6px}
+  .step:not(:last-child)::after,.chain.tight .step:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-14px;transform:translateX(50%);font-size:14px}
+  .chain{gap:20px}
+  .agenda .num,.takeaways .num{font-size:1.8rem}
+  .takeaways h3{font-size:1.2rem}
+  .model h3{font-size:1.2rem}
+  .model .meter{height:8px}
+  .tank{height:40px;font-size:.7rem}
+  .tank span{font-size:0}
+  .tank .free{font-size:.7rem}
+  .tank-wrap{padding-top:36px}
+  .limit span{white-space:normal;width:min(55vw,210px);line-height:1.25}
+  .fill i{width:12px;height:12px}
+  .recipe li{grid-template-columns:28px 1fr;row-gap:4px}
+  .recipe q{grid-column:2}
+  .recipe .rn{font-size:1.3rem}
+  .ctable th,.ctable td{padding:8px 6px}
+  .sheet-head{gap:10px;flex-wrap:wrap}
+  .panel,.card,.model{padding:16px}
+  .card code,.panel code{white-space:normal}
+  .scenario{padding:14px}
+}
+/* ---------- impresión / PDF: una diapositiva por página ---------- */
+@page{size:13.333in 7.5in;margin:0}
+@media print{
+  html,body{height:auto;background:var(--sheet)}
+  .deck{display:block;height:auto}
+  .stage{display:block;padding:0}
+  .bar{display:none}
+  .slide{
+    display:block;position:relative;width:100%;aspect-ratio:16/9;
+    border:0;border-radius:0;box-shadow:none;
+    break-after:page;page-break-after:always;
+  }
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  .show-notes .slide.is-current .notes{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media (prefers-reduced-motion: reduce){
+  .progress span{transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+  <main class="stage" id="stage">
+
+    <!-- 1 · Portada -->
+    <section class="slide cover" data-section="Portada">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>La Tienda HOME</b> · Talleres de IA</span><span class="ref">Taller 2 · Claude Code en tu día a día</span></div>
+        <div class="cover-body">
+          <div class="stack">
+            <h1>Claude Code <span>en tu día a día</span></h1>
+            <p class="lead">Qué es, cómo se le piden las cosas y qué puede hacer por tu trabajo. Para toda la empresa: no hace falta saber programar.</p>
+          </div>
+          <div class="parts" aria-label="Lista de piezas">
+            <h3>Piezas incluidas</h3>
+            <ol>
+              <li><span class="q">4×</span><span class="n">modelos, con distinta capacidad</span></li>
+              <li><span class="q">1×</span><span class="n">ventana de contexto</span></li>
+              <li><span class="q">2×</span><span class="n">sitios donde trabaja: local y nube</span></li>
+              <li><span class="q">5×</span><span class="n">ingredientes de un buen encargo</span></li>
+              <li><span class="q">3×</span><span class="n">formas de ampliarlo</span></li>
+              <li><span class="q">15′</span><span class="n">de práctica con materiales inventados</span></li>
+            </ol>
+          </div>
+        </div>
+        <p class="small muted">Usa ← → para avanzar · N muestra las notas</p>
+      </div>
+      <aside class="notes">Nadie tiene que saber programar. La idea que atraviesa todo: el resultado depende de lo que le das a la IA y de cómo se lo pides. Al final, 15 minutos para probarlo con una tarea de verdad.</aside>
+    </section>
+
+    <!-- 2 · Índice -->
+    <section class="slide" data-section="Índice">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Índice</b></span><span class="ref">7 bloques y práctica</span></div>
+        <h2>Lo que vamos a ver</h2>
+        <ol class="agenda">
+          <li><span class="num">1</span><h3>Qué es</h3><p class="small muted">Un agente que trabaja con tus archivos, y un ejemplo de principio a fin.</p></li>
+          <li><span class="num">2</span><h3>Los modelos</h3><p class="small muted">Cuatro modelos, para qué sirve cada uno y cuál usar.</p></li>
+          <li><span class="num">3</span><h3>El contexto</h3><p class="small muted">Lo que Claude tiene delante, cómo se llena y cómo mantenerlo limpio.</p></li>
+          <li><span class="num">4</span><h3>Local o nube</h3><p class="small muted">En tu portátil o en un ordenador de Anthropic, y cuándo usar cada uno.</p></li>
+          <li><span class="num">5</span><h3>Pedir bien</h3><p class="small muted">La receta de un buen encargo, y por qué hay que revisar siempre.</p></li>
+          <li><span class="num">6</span><h3>Ampliarlo</h3><p class="small muted">Conectores, skills y plugins: qué son y con qué cuidado se usan.</p></li>
+          <li><span class="num">7</span><h3>Reglas de casa</h3><p class="small muted">Datos personales, contraseñas y permisos.</p></li>
+          <li class="practice"><span class="num">15′</span><h3>Práctica</h3><p class="small muted">Le encargas una tarea de verdad y la revisas.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3 · Qué es -->
+    <section class="slide" data-section="1 · Qué es">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 1</b> · Qué es</span><span class="ref">Chat y agente</span></div>
+        <h2>Un chat responde. Un agente, además, hace cosas.</h2>
+        <div class="cols">
+          <div class="stack">
+            <p class="lead">Claude Code es un <span class="hl">agente</span>: además de contestar, trabaja con tus archivos.</p>
+            <ul class="bullets">
+              <li><b>Lee</b> los documentos de la carpeta que eliges: Excel, PDF, Word, textos.</li>
+              <li><b>Crea y edita</b> archivos: un resumen, una tabla, un borrador.</li>
+              <li><b>Consulta otras herramientas</b> si se las conectas: calendario, Drive, correo.</li>
+              <li><b>Te enseña lo que va a hacer</b> y te pide permiso antes.</li>
+            </ul>
+          </div>
+          <div class="stack">
+            <div class="panel">
+              <span class="label">Un chat</span>
+              <p>"¿Cómo comparo dos tarifas en Excel?"</p>
+              <p class="small muted">Te explica los pasos. Los haces tú.</p>
+            </div>
+            <div class="panel tint">
+              <span class="label">Claude Code</span>
+              <p>"Compara estas dos tarifas y hazme una tabla con las diferencias."</p>
+              <p class="small muted">Abre los dos archivos, empareja los productos, crea la tabla y te dice cuáles no ha sabido emparejar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">La imagen que sirve para todo el taller: alguien nuevo, muy capaz, que cada mañana llega sin recordar nada. Lo que no le cuentes o no le dejes por escrito, no lo sabe. Y tú sigues decidiendo: propone y hace, pero lo revisas tú.</aside>
+    </section>
+
+    <!-- 4 · Un ejemplo de principio a fin -->
+    <section class="slide" data-section="1 · Qué es">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 1</b> · Qué es</span><span class="ref">Un ejemplo de principio a fin</span></div>
+        <h2>Una frase tuya, seis pasos suyos</h2>
+        <div class="flowcase">
+          <div class="panel">
+            <span class="label">En tu carpeta · casos.xlsx</span>
+            <table class="xl">
+              <thead><tr><th></th><th>A · Nº de caso</th><th>B · Responsable</th></tr></thead>
+              <tbody>
+                <tr><th>2</th><td class="num">40112</td><td>Lucía</td></tr>
+                <tr><th>3</th><td class="num">40127</td><td>Marcos</td></tr>
+                <tr><th>4</th><td class="num">40135</td><td>Irene</td></tr>
+              </tbody>
+            </table>
+            <p class="small muted">Y el conector de <b>Zoho CRM</b>, solo lectura.</p>
+          </div>
+          <div class="panel tint">
+            <span class="label">Lo que pides</span>
+            <p class="quote good">"Añade al Excel una columna con el tiempo que lleva abierto cada caso de Zoho."</p>
+          </div>
+          <div class="panel">
+            <span class="label">Te devuelve · casos.xlsx</span>
+            <table class="xl">
+              <thead><tr><th></th><th>A · Nº de caso</th><th>B · Responsable</th><th class="new">C · Días abierto</th></tr></thead>
+              <tbody>
+                <tr><th>2</th><td class="num">40112</td><td>Lucía</td><td class="new num">12</td></tr>
+                <tr><th>3</th><td class="num">40127</td><td>Marcos</td><td class="new num">41</td></tr>
+                <tr><th>4</th><td class="num">40135</td><td>Irene</td><td class="new">Cerrado</td></tr>
+              </tbody>
+            </table>
+            <p class="small muted">Y un resumen de lo que ha hecho.</p>
+          </div>
+        </div>
+        <ol class="chain tight" style="--n:6">
+          <li class="step"><span class="sn">1</span><h3>Lee</h3><p>Tu Excel: dos columnas y 120 casos.</p></li>
+          <li class="step"><span class="sn">2</span><h3>Pregunta</h3><p>¿Días hasta hoy? ¿Y los casos cerrados?</p></li>
+          <li class="step tool"><span class="sn">3 · conector</span><h3>Consulta</h3><p>A Zoho: fecha de creación y estado de cada caso.</p></li>
+          <li class="step"><span class="sn">4</span><h3>Calcula</h3><p>Hoy menos la fecha de creación.</p></li>
+          <li class="step"><span class="sn">5</span><h3>Escribe</h3><p>La columna C en tu Excel, con tu permiso.</p></li>
+          <li class="step"><span class="sn">6</span><h3>Revisa</h3><p>Repasa filas y te dice qué no ha encontrado.</p></li>
+        </ol>
+        <p class="small muted">Tú escribes una frase y contestas una pregunta. Él lee tu archivo, consulta otra herramienta, transforma los datos y deja el resultado. Al final, revisas tú.</p>
+      </div>
+      <aside class="notes">Los pasos, contados: 1) Abre el Excel y ve qué hay: dos columnas y 120 casos. 2) "Tiempo abierto" tiene dos lecturas (hasta hoy, o hasta que se cerró): un buen agente pregunta antes de inventar. 3) Pide al conector de Zoho la fecha de creación y el estado de esos casos; trae como mucho 200 por consulta, así que con más va en tandas. 4) Resta la fecha de creación a la de hoy y aparta los cerrados y los que no existen. 5) Escribe la columna en tu Excel, nunca en Zoho: el conector solo lee. 6) Repasa unas filas y te cuenta qué no ha encontrado. En el Excel no hay datos de clientes, solo número de caso y responsable. Números y nombres inventados. Pregunta a la sala qué tarea suya tiene esta forma: un listado, una herramienta y una cuenta.</aside>
+    </section>
+
+    <!-- 5 · Qué es el contexto -->
+    <section class="slide" data-section="1 · Qué es">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 1</b> · Qué es</span><span class="ref">El contexto</span></div>
+        <h2>El contexto es todo lo que tiene delante al responder</h2>
+        <div class="cols">
+          <div class="stack">
+            <p class="lead">Claude no sabe nada de ti, de tu tienda ni de tu proveedor si no se lo das. Lo que tiene delante en cada momento es <span class="hl">el contexto</span>:</p>
+            <ul class="bullets">
+              <li>Tu mensaje.</li>
+              <li>La conversación hasta ahora.</li>
+              <li>Los archivos que lee.</li>
+              <li>Lo que le devuelven las herramientas y los conectores.</li>
+              <li>Las instrucciones fijas de la carpeta, si las hay.</li>
+            </ul>
+          </div>
+          <div class="stack">
+            <span class="label">Dos cosas que sorprenden</span>
+            <div class="panel">
+              <h3>No recuerda entre conversaciones</h3>
+              <p class="small muted">Cada sesión nueva empieza de cero. Solo le llega lo que esté escrito en archivos o en su memoria.</p>
+            </div>
+            <div class="panel">
+              <h3>Si le falta información, no dice "no sé"</h3>
+              <p class="small muted">Rellena el hueco con lo que le parece más probable. A eso se le llama <b>alucinar</b>: no miente, adivina. Por eso darle buena información no es cortesía: es lo que decide si el resultado sirve.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Volver a la imagen de la persona nueva con amnesia: el contexto es lo que le pones delante esa mañana. La memoria automática existe (guarda preferencias y correcciones), pero no sustituye a darle el material.</aside>
+    </section>
+
+    <!-- 6 · Los modelos -->
+    <section class="slide" data-section="2 · Los modelos">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 2</b> · Los modelos</span><span class="ref">La familia Claude, septiembre de 2026</span></div>
+        <h2>No hay un modelo: hay una flota</h2>
+        <div class="models">
+          <div class="model">
+            <span class="label">La moto</span>
+            <h3>Haiku 4.5</h3>
+            <p>El más rápido y el que menos gasta. Para tareas sencillas y repetitivas.</p>
+            <p class="eg">Por ejemplo: poner 200 referencias en el mismo formato.</p>
+            <div class="cost"><div class="meter"><span style="--w:10%"></span></div><small>precio 1×</small></div>
+          </div>
+          <div class="model">
+            <span class="label">La furgoneta</span>
+            <h3>Sonnet 5.5</h3>
+            <p>La mejor mezcla de velocidad e inteligencia. Rápido y resolutivo para el día a día.</p>
+            <p class="eg">Por ejemplo: resumir un documento o redactar un correo.</p>
+            <div class="cost"><div class="meter"><span style="--w:20%"></span></div><small>precio 2×</small></div>
+          </div>
+          <div class="model default">
+            <span class="tag badge">Por defecto</span>
+            <span class="label">El camión de reparto</span>
+            <h3>Opus 5.5</h3>
+            <p>El que viene de serie. Anthropic recomienda empezar por él: sirve para casi todo, también para tareas largas.</p>
+            <p class="eg">Por ejemplo: comparar dos tarifas y recomendar un proveedor.</p>
+            <div class="cost"><div class="meter"><span style="--w:40%"></span></div><small>precio 4×</small></div>
+          </div>
+          <div class="model">
+            <span class="label">El de mudanzas</span>
+            <h3>Fable 5.1</h3>
+            <p>Para el razonamiento más exigente. El más lento y el que más gasta. Se elige a mano y, según el plan, se cobra aparte.</p>
+            <p class="eg">Por ejemplo: un análisis largo con muchas fuentes que se contradicen.</p>
+            <div class="cost"><div class="meter"><span style="--w:100%"></span></div><small>precio 10×</small></div>
+          </div>
+        </div>
+        <p class="small muted">No mandas un camión de mudanzas a entregar un cojín, ni una moto a llevar un sofá. · Precio: por uso en la API de Anthropic, tomando Haiku como referencia. En tu plan se nota en que la cuota se gasta antes.</p>
+      </div>
+      <aside class="notes">Fuente: platform.claude.com/docs/en/models/overview (29 sep 2026). Precios de entrada por millón de tokens: Haiku 1 $, Sonnet 2 $, Opus 4 $, Fable 10 $. Opus 5.5 es el modelo por defecto de Claude Code en todos los planes. Fable nunca es el de por defecto y, según el plan, se cobra con créditos de uso: Claude Code avisa antes.</aside>
+    </section>
+
+    <!-- 7 · Cómo elegir -->
+    <section class="slide" data-section="2 · Los modelos">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 2</b> · Los modelos</span><span class="ref">/model · /effort</span></div>
+        <h2>Cómo se elige en la práctica</h2>
+        <div class="cols">
+          <div class="stack">
+            <span class="label">La regla</span>
+            <ul class="bullets">
+              <li><b>Empieza por el que viene</b> (Opus 5.5). Para casi todo, es el adecuado.</li>
+              <li><b>¿Tarea mecánica y repetitiva?</b> Baja a Sonnet o Haiku: irá más rápido y gastará menos.</li>
+              <li><b>¿Se equivoca en algo difícil?</b> Primero, dale mejor contexto. Después, que piense más. Fable, solo para lo muy difícil.</li>
+            </ul>
+            <div class="panel mark">
+              <p><b>Cambiar de modelo no arregla un mal encargo.</b> Casi siempre falla lo que le hemos dado, no el modelo.</p>
+            </div>
+          </div>
+          <div class="stack">
+            <span class="label">Dónde se cambia</span>
+            <div class="panel">
+              <h3>El modelo</h3>
+              <p class="small">En el desplegable que hay junto al botón de enviar, o escribiendo <code>/model</code>.</p>
+            </div>
+            <div class="panel">
+              <h3>Cuánto piensa</h3>
+              <p class="small">El <b>esfuerzo</b>: cuánto razona antes de contestar. Más esfuerzo es más calidad en lo difícil, pero más tiempo y más cuota. Se cambia con <code>/effort</code> o en el menú de esfuerzo de la app.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Opus 5.5 y Sonnet 5.5 vienen con esfuerzo medio (medium). Los niveles son low, medium, high, xhigh y max. Para empezar, no hace falta tocar nada.</aside>
+    </section>
+
+
+    <!-- 8 · Cómo se llena -->
+    <section class="slide" data-section="3 · El contexto">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 3</b> · El contexto</span><span class="ref">Trabajando en local</span></div>
+        <h2>Cómo se llena el <span class="hl">contexto</span> cuando trabajas en local</h2>
+        <div class="tank-wrap">
+          <div class="tank" role="img" aria-label="Barra que representa el contexto: las instrucciones, tu mensaje, tus archivos, lo que consulta y la conversación llenan el primer 30 %. Una línea marca ese 30 % como el límite recomendado y el resto queda libre">
+            <span class="s1" style="--w:5%">1</span>
+            <span class="s2" style="--w:3%">2</span>
+            <span class="s3" style="--w:9%">3</span>
+            <span class="s4" style="--w:7%">4</span>
+            <span class="s5" style="--w:6%">5</span>
+            <span class="free">libre</span>
+          </div>
+          <span class="limit" style="--at:30%" aria-hidden="true"><span>30 % · no conviene pasar de aquí</span></span>
+        </div>
+        <ol class="fill">
+          <li class="s1"><b><i></i>Al abrir la carpeta</b><span>Sus instrucciones fijas (<code>AGENTS.md</code>) y su memoria.</span></li>
+          <li class="s2"><b><i></i>Tu mensaje</b><span>Lo que escribes, con todo lo que le cuentas.</span></li>
+          <li class="s3"><b><i></i>Tus archivos</b><span>Lo que le das con <code>@</code> o arrastras. Entra entero.</span></li>
+          <li class="s4"><b><i></i>Lo que consulta</b><span>Lo que lee por su cuenta y lo que traen herramientas y conectores.</span></li>
+          <li class="s5"><b><i></i>La conversación</b><span>Cada respuesta y cada corrección se suman.</span></li>
+        </ol>
+        <div class="cols" style="--n:2;flex:0 0 auto">
+          <div class="panel tint">
+            <span class="label">Cuánto cabe</span>
+            <p class="small">Opus, Sonnet y Fable: <b>1 millón de tokens</b>, más de medio millón de palabras. Haiku: 200.000 tokens, unas 150.000 palabras. Un <b>token</b> es un trozo de palabra.</p>
+          </div>
+          <div class="panel mark">
+            <span class="label">No pases del 30 %</span>
+            <p class="small">No es recomendable superar el <b>30 % del contexto disponible</b>: cuanto más lleno, más fácil que se le escape un detalle. Míralo en el anillo que hay junto al selector de modelo, o con <code>/context</code>. Si llegas, <code>/compact</code> o una sesión nueva.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">El 30 % es una recomendación de la casa, no un límite de Claude Code: aunque quepa mucho, cuanto más lleno va el contexto, más se diluye lo importante. Si se llena del todo, Claude Code resume la conversación él solo para seguir trabajando, y en ese resumen se pierde detalle. /compact hace ese resumen a propósito cuando quieres seguir con la misma tarea. El AGENTS.md es lo que vimos en el taller 1: instrucciones que se cargan siempre.</aside>
+    </section>
+
+    <!-- 9 · Mantenerlo limpio -->
+    <section class="slide" data-section="3 · El contexto">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 3</b> · El contexto</span><span class="ref">/clear · /compact</span></div>
+        <h2>Cuatro hábitos para mantener limpio el contexto</h2>
+        <div class="cards" style="--n:2">
+          <div class="card"><h3>Una tarea, una conversación</h3><p>Para otra cosa, sesión nueva en la barra lateral, o <code>/clear</code>. Lo de antes estorba: Claude intenta que encaje con lo nuevo.</p></div>
+          <div class="card"><h3>Dale lo relevante, no todo</h3><p>Mejor el Excel de este mes que la carpeta de los últimos cinco años. Si hay dos versiones de un documento, dale solo la buena.</p></div>
+          <div class="card"><h3>Lo que tiene que saber siempre, por escrito</h3><p>Un <code>AGENTS.md</code> en la carpeta con quién eres, cómo trabajas y qué no hacer. Se carga solo cada vez que abres esa carpeta.</p></div>
+          <div class="card"><h3>Si se ha liado, empieza de cero</h3><p>Diez correcciones seguidas llenan el depósito de intentos fallidos. Mejor una sesión nueva con un encargo mejor, sabiendo ya lo que falló.</p></div>
+        </div>
+        <div class="panel tint">
+          <span class="label">¿Y si quieres seguir con la misma tarea, pero va muy lleno?</span>
+          <p><code>/compact</code> resume la conversación y libera espacio sin empezar de cero. Puedes decirle qué no debe perder: <code>/compact conserva los precios acordados</code>.</p>
+        </div>
+      </div>
+      <aside class="notes">Un documento viejo que contradice al nuevo no es neutro: Claude lo lee y le hace caso. Por eso "solo la versión buena". Sobre el AGENTS.md: Claude Code lo lee por su cuenta cuando en esa carpeta, o en las de encima, no hay un CLAUDE.md (desde la versión 2.1.277).</aside>
+    </section>
+
+    <!-- 10 · Dónde se usa -->
+    <section class="slide" data-section="4 · Local o nube">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 4</b> · Local o nube</span><span class="ref">Dónde se usa</span></div>
+        <h2>El mismo Claude Code, en cuatro sitios</h2>
+        <div class="cards" style="--n:4">
+          <div class="card strong"><span class="tag solid">Hoy</span><h3>App de escritorio</h3><p>Para Mac y Windows. Pestaña <b>Code</b> → <b>Local</b> → eliges una carpeta.</p><p class="where">claude.ai/download</p></div>
+          <div class="card"><h3>Web</h3><p>Tareas que trabajan en la nube, sobre un repositorio de GitHub. Lo vemos en la siguiente diapositiva.</p><p class="where">claude.ai/code</p></div>
+          <div class="card"><h3>Móvil</h3><p>Para lanzar o seguir desde el móvil una tarea que trabaja en la nube.</p><p class="where">app de Claude → Code</p></div>
+          <div class="card"><h3>Terminal</h3><p>Para quien programa: el mismo Claude Code, sin ventanas.</p><p class="where">claude</p></div>
+        </div>
+        <div class="panel tint">
+          <span class="label">¿Y Codex?</span>
+          <p>Es la herramienta equivalente de OpenAI, la empresa de ChatGPT. Lo que vemos hoy (modelos, contexto, cómo pedir, revisar) vale igual para las dos.</p>
+        </div>
+      </div>
+      <aside class="notes">En la app hay otras pestañas además de Code (Chat y Cowork): hoy solo usamos Code. Si preguntan por Cowork, queda para otro día.</aside>
+    </section>
+
+    <!-- 11 · Local o nube -->
+    <section class="slide" data-section="4 · Local o nube">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 4</b> · Local o nube</span><span class="ref">Pestaña Code → Local · Cloud</span></div>
+        <h2>Dos sitios donde puede trabajar</h2>
+        <div class="cols">
+          <div class="panel">
+            <span class="label">Local · tu portátil</span>
+            <p>Pestaña <b>Code</b> → <b>Local</b> → eliges una carpeta.</p>
+            <dl class="perm">
+              <dt>Ve</dt><dd>Los archivos de la carpeta que eliges.</dd>
+              <dt>Usa</dt><dd>Tus conectores y tus plugins.</dd>
+              <dt>Pide permiso</dt><dd>Según el modo que elijas (bloque 7).</dd>
+              <dt>Se para</dt><dd>Si cierras la app o apagas el portátil.</dd>
+            </dl>
+          </div>
+          <div class="panel">
+            <span class="label">Nube · un ordenador de Anthropic</span>
+            <p>Pestaña <b>Code</b> → <b>Cloud</b>, en <b>claude.ai/code</b> o desde la app del móvil.</p>
+            <dl class="perm">
+              <dt>Ve</dt><dd>Una copia de un repositorio de GitHub. Tu portátil, no.</dd>
+              <dt>Sigue</dt><dd>Aunque cierres la app o apagues el ordenador.</dd>
+              <dt>En paralelo</dt><dd>Varias tareas a la vez, cada una en su sesión.</dd>
+              <dt>Se consulta</dt><dd>Desde el navegador o el móvil.</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="panel tint">
+          <p class="small"><b>En los dos casos, la "inteligencia" está en los servidores de Anthropic:</b> lo que Claude lee de tus archivos se envía allí para responder. Por eso importan las reglas del bloque 7.</p>
+        </div>
+      </div>
+      <aside class="notes">Hay más opciones (SSH, WSL) para perfiles técnicos: no hacen falta hoy. Una sesión local también se puede seguir desde el móvil con Remote Control, pero sigue trabajando en el portátil.</aside>
+    </section>
+
+    <!-- 12 · Cuál uso -->
+    <section class="slide" data-section="4 · Local o nube">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 4</b> · Local o nube</span><span class="ref">Cuál uso</span></div>
+        <h2>Para tu día a día, local</h2>
+        <div class="cols" style="grid-template-columns:1.5fr 1fr">
+          <table class="ctable">
+            <thead><tr><th scope="col"></th><th scope="col">Local</th><th scope="col">Nube</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Dónde están los archivos</th><td>En tu portátil</td><td>En GitHub</td></tr>
+              <tr><th scope="row">Hace falta GitHub</th><td>No</td><td>Sí</td></tr>
+              <tr><th scope="row">Si cierras el portátil</th><td>Se para</td><td>Sigue</td></tr>
+              <tr><th scope="row">Darle un archivo con <code>@</code></th><td>Sí</td><td>No</td></tr>
+              <tr><th scope="row">Conectores y plugins del botón +</th><td>Sí</td><td>No</td></tr>
+              <tr><th scope="row">Modos de permiso</th><td>Todos</td><td>Accept edits, Plan y Auto</td></tr>
+              <tr><th scope="row">Gasta de tu plan</th><td colspan="2">Sí, de la misma cuota</td></tr>
+            </tbody>
+          </table>
+          <div class="stack">
+            <div class="panel tint">
+              <span class="label">Local</span>
+              <p>Tus Excel, PDF y documentos están en tu portátil. Para lo de cada día, <b>local</b>.</p>
+            </div>
+            <div class="panel">
+              <span class="label">Nube</span>
+              <p class="small">Tareas largas sobre repositorios compartidos, que siguen mientras haces otra cosa. Lo normal en el equipo de Data.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Fuente: code.claude.com/docs/en/desktop y /claude-code-on-the-web. Las sesiones en la nube están en los planes Pro, Max y Team, y en Enterprise con ciertos puestos; la organización tiene que tenerlas activadas.</aside>
+    </section>
+
+    <!-- 13 · La receta -->
+    <section class="slide" data-section="5 · Pedir bien">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">La receta</span></div>
+        <h2>Pídeselo como a alguien nuevo que no conoce la casa</h2>
+        <ol class="recipe">
+          <li><span class="rn">1</span><b>Quién eres y para qué</b><q>Soy de atención al cliente y es para contestar a una clienta.</q></li>
+          <li><span class="rn">2</span><b>La tarea, concreta</b><q>Reescribe esta respuesta.</q></li>
+          <li><span class="rn">3</span><b>El material</b><q>@borrador-respuesta-cliente.md, el Excel, el PDF.</q></li>
+          <li><span class="rn">4</span><b>Cómo lo quieres</b><q>Máximo 150 palabras, tono cercano, dos versiones.</q></li>
+          <li><span class="rn">5</span><b>Cuándo está bien</b><q>Que acabe con un siguiente paso claro y no prometa plazos.</q></li>
+        </ol>
+        <p class="small muted"><b>Extra:</b> un ejemplo de algo que te gustó vale más que tres adjetivos. "Que suene como este correo" funciona mejor que "cercano, profesional y empático".</p>
+      </div>
+      <aside class="notes">No hace falta escribir bonito ni usar palabras mágicas. Hace falta lo que le dirías a una persona nueva: quién, para qué, qué, con qué, cómo y cuándo está bien. La plantilla está en la chuleta (guias/02-chuleta.md).</aside>
+    </section>
+
+    <!-- 14 · Antes y después -->
+    <section class="slide" data-section="5 · Pedir bien">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">Antes y después</span></div>
+        <h2>El mismo encargo, pedido de dos maneras</h2>
+        <div class="compare">
+          <div class="stack">
+            <span class="verdict bad">Poco útil</span>
+            <p class="quote">"Contesta a esta clienta."</p>
+            <p class="small muted">Claude tiene que inventarse el tono, qué podemos ofrecer y hasta dónde puede llegar. Lo que se invente, lo vas a tener que corregir. Y si no lo revisas, lo recibe la clienta.</p>
+          </div>
+          <div class="stack">
+            <span class="verdict good">Útil</span>
+            <p class="quote good">"<b>Soy de atención al cliente.</b> En <code>@borrador-respuesta-cliente.md</code> está el correo de una clienta a la que le llegó el sofá con una pata rota. <b>Reescribe la respuesta</b> con tono cercano, pide disculpas concretas y no culpes al transportista. <b>Podemos ofrecer</b> una pata nueva en 5 días laborables o cambiar el sofá. <b>No prometas nada más.</b> <b>Máximo 150 palabras.</b>"</p>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><b>Para quién y para qué</b>Quién eres y qué va a pasar con el resultado.</li>
+          <li><b>Qué puede y qué no</b>Lo que puede ofrecer, y el límite, por escrito.</li>
+          <li><b>Cómo lo quieres</b>Extensión, tono y formato, sin que tenga que adivinar.</li>
+        </ul>
+      </div>
+      <aside class="notes">Este ejemplo es el ejercicio C de la práctica, con materiales inventados. Si queréis verlo en directo: pedir las dos versiones en dos sesiones distintas y comparar.</aside>
+    </section>
+
+    <!-- 15 · En conversación -->
+    <section class="slide" data-section="5 · Pedir bien">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">Modo Plan</span></div>
+        <h2>No es un formulario: es una conversación</h2>
+        <div class="cols">
+          <ul class="bullets">
+            <li><b>Pídele que pregunte primero.</b> "Antes de empezar, pregúntame lo que necesites." Te descubre lo que no habías pensado.</li>
+            <li><b>Primero el plan, después el trabajo.</b> En modo <b>Plan</b> lee y te propone cómo lo haría, sin tocar nada. Lo corriges, y entonces lo hace.</li>
+            <li><b>Corrige sobre la marcha.</b> Puedes escribirle mientras trabaja ("los precios, sin IVA") o pararlo con el botón de parar.</li>
+            <li><b>Si se ha liado, empieza de cero</b>, con un encargo mejor. No hace falta arreglarlo a base de correcciones.</li>
+          </ul>
+          <div class="stack">
+            <span class="label">Ejemplo</span>
+<div class="scenario"><span class="k">Tú:</span> Compara estas dos tarifas. Antes de empezar, pregúntame lo que necesites.
+
+<span class="k">Claude:</span> Tres preguntas:
+<span class="h">1.</span> ¿Los precios van con IVA o sin IVA?
+<span class="h">2.</span> Un proveedor da el plazo en días y el otro en semanas. ¿Lo paso todo a días?
+<span class="h">3.</span> ¿Qué hago con los productos que solo están en una tarifa?
+
+<span class="k">Tú:</span> Sin IVA, todo a días, y los que no tengan pareja, al final.</div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">El modo se elige en el selector que hay junto al botón de enviar. Plan es muy útil para cosas grandes: ves el enfoque antes de que cambie nada. Las preguntas del ejemplo son justo las trampas del ejercicio A.</aside>
+    </section>
+
+    <!-- 16 · Revisa siempre -->
+    <section class="slide" data-section="5 · Pedir bien">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">Revisar</span></div>
+        <h2>Revisa siempre: el resultado lo firmas tú</h2>
+        <div class="cols">
+          <ul class="bullets">
+            <li><b>Puede equivocarse con total seguridad.</b> Que suene convincente no quiere decir que sea verdad.</li>
+            <li><b>Pídele de dónde sale cada dato:</b> "cita la sección", "dime la fila del Excel".</li>
+            <li><b>Comprueba tú lo importante:</b> cifras, nombres, plazos y todo lo que vaya a un cliente.</li>
+            <li><b>Pídele que se revise:</b> "¿Qué parte de tu respuesta es menos fiable?"</li>
+            <li><b>Si algo no cuadra, díselo.</b> Cuando le señalas el error, suele corregirlo bien.</li>
+          </ul>
+          <div class="stack">
+            <span class="label">Cuanto más importa, más se revisa</span>
+            <ol class="ladder">
+              <li><span>Una lluvia de ideas para ti</span><span>Léela</span></li>
+              <li><span>Un resumen o una tabla para el equipo</span><span>Comprueba las cifras</span></li>
+              <li><span>Algo que va a un cliente o a dirección</span><span>Línea a línea</span></li>
+            </ol>
+            <div class="panel tint">
+              <p class="small">En la práctica hay errores escondidos a propósito: dos contradicciones en un documento y una tarifa con los plazos en semanas. A ver quién los pilla.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">La idea que más importa del taller después de la del contexto. Claude prepara, tú decides. Si algo sale mal, no vale "lo ha dicho la IA".</aside>
+    </section>
+
+    <!-- 17 · Ampliarlo -->
+    <section class="slide" data-section="6 · Ampliarlo">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 6</b> · Ampliarlo</span><span class="ref">Botón + junto a la caja del mensaje</span></div>
+        <h2>Tres formas de darle más capacidades</h2>
+        <div class="cards" style="--n:4">
+          <div class="card strong"><span class="label">Conectores</span><h3>Llaves de otras herramientas</h3><p>Le dan acceso a Google Drive, Calendar, Slack, Notion… Por dentro son servidores <b>MCP</b>, un estándar para conectar la IA con otras herramientas.</p><p class="where">+ → Connectors</p></div>
+          <div class="card strong"><span class="label">Skills</span><h3>Manuales de una tarea</h3><p>Instrucciones que Claude carga solo cuando hacen falta, o que llamas tú con <code>/</code>. Por ejemplo: crear un Excel, un Word, un PowerPoint o un PDF.</p><p class="where">/ · + → Slash commands</p></div>
+          <div class="card strong"><span class="label">Plugins</span><h3>El kit completo</h3><p>Paquetes que traen varias cosas juntas: skills, conectores y más. Se instalan de un catálogo (<i>marketplace</i>), como el oficial de Anthropic.</p><p class="where">+ → Plugins → Add plugin</p></div>
+          <div class="card"><span class="label">Y los comandos</span><h3>Atajos con /</h3><p><code>/model</code> cambia de modelo. <code>/context</code> enseña el depósito. <code>/compact</code> lo resume. <code>/clear</code> empieza de cero.</p><p class="where">escribe / en el chat</p></div>
+        </div>
+        <p class="small muted"><b>Customize</b>, en la barra lateral de la app, reúne conectores, skills y plugins en un solo sitio.</p>
+      </div>
+      <aside class="notes">Las skills y los plugins activados en tu cuenta de claude.ai también llegan a Claude Code. Las skills de Excel, Word, PowerPoint y PDF son de Anthropic: si están activadas en tu cuenta, Claude las usa solo cuando le pides uno de esos archivos.</aside>
+    </section>
+
+    <!-- 18 · Con cuidado -->
+    <section class="slide" data-section="6 · Ampliarlo">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 6</b> · Ampliarlo</span><span class="ref">Antes de instalar</span></div>
+        <h2>Antes de instalar algo, piensa a qué puertas abre</h2>
+        <div class="cols">
+          <ul class="bullets">
+            <li><b>Una skill o un plugin son instrucciones que Claude va a seguir</b>, y a veces programas que va a ejecutar. Lo que diga, lo hará.</li>
+            <li><b>Instala solo de sitios de confianza:</b> el catálogo oficial de Anthropic o lo que prepare el equipo de Data.</li>
+            <li><b>Un conector da acceso de verdad.</b> Lo que Claude pueda leer, lo leerá, y lo que pueda cambiar, lo podrá cambiar. Si se puede elegir, empieza por solo lectura.</li>
+            <li><b>Si dudas, pregunta antes</b> al equipo de Data. Es un minuto.</li>
+          </ul>
+          <div class="stack">
+            <div class="panel mark">
+              <span class="label">Conectar es dar una llave</span>
+              <p>Antes de darle las llaves del almacén a alguien nuevo, piensas qué puertas abren. Con Claude, igual.</p>
+            </div>
+            <div class="panel">
+              <p class="small muted">Un plugin de un desconocido puede traer instrucciones que no ves a simple vista. Por eso en el equipo se leen con alguien antes de instalarlos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">No se trata de dar miedo: los conectores y plugins son lo que hace que Claude sea útil de verdad. Se trata de instalar a propósito, no porque sí.</aside>
+    </section>
+
+    <!-- 19 · Reglas de casa -->
+    <section class="slide" data-section="7 · Reglas de casa">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 7</b> · Reglas de casa</span><span class="ref">Datos y permisos</span></div>
+        <h2>Las reglas de casa</h2>
+        <div class="cols">
+          <div class="stack">
+            <span class="label">Los datos</span>
+            <ul class="bullets">
+              <li><b>Nada de datos personales</b> de clientes ni de compañeros: nombres con teléfono, DNI, direcciones, correos, exportaciones del CRM. Quita esas columnas antes o usa datos inventados.</li>
+              <li><b>Nunca contraseñas, claves ni tokens</b>, tampoco "solo un momento".</li>
+              <li><b>Claude prepara, tú envías.</b> Nada llega a un cliente sin que lo lea una persona.</li>
+            </ul>
+          </div>
+          <div class="stack">
+            <span class="label">Los permisos · selector junto a enviar</span>
+            <dl class="perm">
+              <dt><span class="tag">Manual</span></dt><dd>Te pregunta antes de cambiar un archivo o ejecutar algo. Muy seguro, pero te para a cada paso.</dd>
+              <dt><span class="tag solid">Accept edits</span></dt><dd>Cambia archivos sin preguntar y tú lo revisas después. Para lo demás, sí pregunta. <b>Empieza aquí.</b></dd>
+              <dt><span class="tag">Plan</span></dt><dd>Lee y propone, pero no cambia nada.</dd>
+              <dt><span class="tag">Auto</span></dt><dd>Decide solo, con comprobaciones de seguridad. Para cuando tengas soltura.</dd>
+            </dl>
+            <div class="panel mark">
+              <p><b>Revisa lo que cambia y lee lo que apruebas.</b> Los cambios se ven en el indicador <code>+12 −1</code> que aparece sobre el chat. Aceptar sin mirar es como firmar el albarán sin mirar el sofá.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Lo que Claude lee se envía a los servidores de Anthropic (bloque 4): por eso los datos personales no se le dan. Si hace falta trabajar con un listado de clientes, se quitan antes las columnas personales. Estas reglas salen de las normas comunes del equipo de Data.</aside>
+    </section>
+
+    <!-- 20 · Práctica -->
+    <section class="slide" data-section="Práctica">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Práctica</b> · 15 minutos</span><span class="ref">guias/01-practica.md</span></div>
+        <h2>Ahora tú: encárgale algo de verdad</h2>
+        <ol class="chain">
+          <li class="step"><span class="sn">1</span><h3>Abre la carpeta</h3><p>Code → Local → <code>workshops/02-claude-code-en-tu-trabajo</code></p></li>
+          <li class="step"><span class="sn">2</span><h3>Modo Manual</h3><p>Y el modelo que viene por defecto.</p></li>
+          <li class="step"><span class="sn">3</span><h3>Elige un ejercicio</h3><p>El que más se parezca a tu trabajo.</p></li>
+          <li class="step"><span class="sn">4</span><h3>Usa la receta</h3><p>Y dale el archivo con <code>@</code>.</p></li>
+          <li class="step review"><span class="sn">5</span><h3>Revisa</h3><p>¿Se ha inventado algo? ¿Ha pillado las trampas?</p></li>
+        </ol>
+        <ul class="exercises">
+          <li><b>A · Comparar tarifas</b><span>Dos proveedores que llaman distinto a los mismos productos.</span></li>
+          <li><b>B · Resumir un procedimiento</b><span>Un procedimiento de entregas con dos contradicciones escondidas.</span></li>
+          <li><b>C · Mejorar una respuesta</b><span>El correo de una clienta enfadada y un borrador flojo.</span></li>
+          <li><b>D · Tu propia tarea</b><span>Algo de tu trabajo, sin datos personales.</span></li>
+        </ul>
+        <p class="small muted">Todo lo de <code>practica/</code> es inventado. Al terminar, Claude te dará un consejo para pedirlo mejor.</p>
+      </div>
+      <aside class="notes">Dar una vuelta por la sala. El momento bueno es cuando alguien encuentra un error en lo que ha hecho Claude: ahí se entiende "revisa siempre". Si alguien acaba pronto, que pruebe a pedir lo mismo mal, en una sola frase, y compare.</aside>
+    </section>
+
+  </main>
+
+  <nav class="bar" aria-label="Navegación de la presentación">
+    <div class="where-am-i"><b id="section">Portada</b><span class="hint">← → para avanzar</span></div>
+    <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+    <div class="controls">
+      <button class="btn" id="prev" type="button" aria-label="Diapositiva anterior">←</button>
+      <span class="count" id="count" aria-live="polite">1 / 20</span>
+      <button class="btn" id="next" type="button" aria-label="Diapositiva siguiente">→</button>
+      <button class="btn" id="notes" type="button" aria-pressed="false" title="Notas para quien presenta (N)">Notas</button>
+    </div>
+  </nav>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var deck = document.getElementById('deck');
+  var count = document.getElementById('count');
+  var section = document.getElementById('section');
+  var progress = document.getElementById('progress');
+  var notesBtn = document.getElementById('notes');
+  var current = 0;
+
+  function fromHash(){
+    var n = parseInt((location.hash || '').replace('#', ''), 10);
+    return isNaN(n) ? 0 : Math.min(Math.max(n - 1, 0), slides.length - 1);
+  }
+  function show(i, push){
+    current = Math.min(Math.max(i, 0), slides.length - 1);
+    slides.forEach(function(s, k){ s.classList.toggle('is-current', k === current); });
+    count.textContent = (current + 1) + ' / ' + slides.length;
+    section.textContent = slides[current].getAttribute('data-section');
+    progress.style.width = ((current + 1) / slides.length * 100) + '%';
+    if (push !== false) history.replaceState(null, '', '#' + (current + 1));
+  }
+  function toggleNotes(){
+    var on = !deck.classList.contains('show-notes');
+    deck.classList.toggle('show-notes', on);
+    notesBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+
+  document.getElementById('prev').addEventListener('click', function(){ show(current - 1); });
+  document.getElementById('next').addEventListener('click', function(){ show(current + 1); });
+  notesBtn.addEventListener('click', toggleNotes);
+
+  document.addEventListener('keydown', function(e){
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); show(current + 1); }
+    else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); show(current - 1); }
+    else if (k === 'Home') { show(0); }
+    else if (k === 'End') { show(slides.length - 1); }
+    else if (k === 'n' || k === 'N') { toggleNotes(); }
+  });
+
+  var startX = null;
+  document.getElementById('stage').addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
+  document.getElementById('stage').addEventListener('touchend', function(e){
+    if (startX === null) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    startX = null;
+  });
+
+  window.addEventListener('hashchange', function(){ show(fromHash(), false); });
+  show(fromHash(), false);
+})();
+</script>
+</body>
+</html>
