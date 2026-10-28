@@ -13,7 +13,22 @@ continuar texto de forma sensata. Claude es uno.
 conversación y los archivos que ha leído. Es lo único que sabe de tu proyecto.
 
 **Ventana de contexto** — Cuánto cabe ahí dentro. Es grande, pero no infinita:
-si la llenas de cosas irrelevantes, lo importante se diluye.
+si la llenas de cosas irrelevantes, lo importante se diluye. Nuestra
+recomendación es no pasar del 30 % del contexto disponible.
+
+**Token** — El trozo de texto con el que cuenta un modelo: más o menos, un
+trozo de palabra. El tamaño del contexto y el precio se miden en tokens.
+
+**Compactar** — Cuando el contexto se llena, Claude Code resume la conversación
+para seguir trabajando. Lo hace solo, o cuando escribes `/compact`. En el
+resumen se pierde detalle.
+
+**Opus, Sonnet, Haiku, Fable** — Los modelos de Claude. Opus es el que viene por
+defecto y sirve para casi todo; Sonnet es más rápido; Haiku, el más rápido y el
+que menos gasta; Fable, el que más razona y más gasta, para lo muy difícil.
+
+**Esfuerzo** — Cuánto razona el modelo antes de contestar. Más esfuerzo da más
+calidad en lo difícil, pero tarda más y gasta más. Se cambia con `/effort`.
 
 **Alucinación** — Cuando el modelo se inventa algo con toda seguridad porque le
 faltaba información. No es que mienta: rellena el hueco con lo que le parece más
@@ -26,7 +41,8 @@ ejecutar comandos, editar código. Claude Code es un agente.
 
 **AGENTS.md** — Un archivo de texto con las reglas y convenciones del proyecto
 para la IA. Es un nombre estándar que entienden varias herramientas. Se leen en
-cascada: el de la raíz más el de la subcarpeta donde estés.
+cascada: el de la raíz más el de la subcarpeta donde estés. Claude Code lo lee
+por su cuenta cuando no hay un `CLAUDE.md` en esa carpeta ni en las de encima.
 
 **CLAUDE.md** — El archivo que Claude Code lee automáticamente al trabajar en
 una carpeta. En estos talleres solo contiene una referencia (`@AGENTS.md`) que
@@ -39,13 +55,30 @@ solo cuando hace falta. Vive en `.claude/skills/<nombre>/SKILL.md`.
 **MCP** — Un estándar para conectar a la IA con herramientas externas (una base
 de datos, Figma, GitHub). No hace falta en el taller 1.
 
+**Conector** — Un servidor MCP que se añade desde la aplicación con un par de
+clics (botón **+** → **Connectors**): Google Drive, Calendar, Slack… Le da a
+Claude acceso de verdad a esa herramienta.
+
+**Plugin** — Un paquete que trae varias cosas juntas para Claude Code (skills,
+conectores y más). Se instala desde un catálogo o *marketplace*.
+
+**Comando de barra** — Un atajo que empieza por `/` y se escribe en el chat:
+`/model`, `/context`, `/clear`… Escribiendo solo `/` ves la lista.
+
 **Modo de permisos** — Cuánto puede hacer Claude Code sin pedirte permiso.
 *Manual* pregunta antes de cada cambio, *Accept edits* los aplica y tú los
-revisas después, *Plan* solo propone sin tocar nada. En el taller usamos
-*Accept edits*.
+revisas después, *Plan* solo propone sin tocar nada y *Auto* decide solo con
+comprobaciones de seguridad. En el taller 1 usamos *Accept edits*; en la
+práctica del taller 2, *Manual*.
 
 **Sesión** — Una conversación con Claude sobre tu proyecto. Cada una lleva su
 propio contexto, así que puedes tener varias en paralelo sin que se mezclen.
+
+**Local / nube** — Dónde trabaja Claude Code: en tu portátil, con los archivos
+de la carpeta que eliges, o en un ordenador de Anthropic, sobre una copia de un
+repositorio de GitHub, que sigue aunque cierres el portátil.
+
+**Codex** — La herramienta de OpenAI equivalente a Claude Code.
 
 **Vista de diferencias (diff)** — La pantalla que te enseña exactamente qué
 líneas ha cambiado Claude: en verde lo añadido, en rojo lo quitado. Se abre
@@ -154,7 +187,7 @@ conseguirlo. Vive en `openspec/changes/`.
 **Archivar** — Dar un cambio por terminado: se guarda y las specs se actualizan
 para reflejar cómo funciona ahora el sistema.
 
-## Despliegue (taller 2)
+## Despliegue (próximos talleres)
 
 **Desplegar** — Poner la aplicación en un servidor para que sea accesible desde
 fuera de tu ordenador.

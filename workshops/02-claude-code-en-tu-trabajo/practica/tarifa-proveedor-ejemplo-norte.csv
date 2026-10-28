@@ -1,0 +1,13 @@
+referencia;producto;medidas_cm;precio_coste_eur;plazo_entrega_dias;pedido_minimo_uds
+N-1001;Sofá 3 plazas tela gris;210x90x85;412,50;21;2
+N-1002;Sofá 2 plazas tela gris;170x90x85;355,00;21;2
+N-1003;Sofá chaise longue derecha tela beige;270x160x88;689,90;28;1
+N-1004;Sillón relax eléctrico piel sintética marrón;80x90x105;298,00;14;4
+N-2001;Colchón viscoelástico 135x190;135x190x28;189,00;7;5
+N-2002;Colchón viscoelástico 150x190;150x190x28;214,00;7;5
+N-2003;Colchón muelles ensacados 150x190;150x190x30;265,00;10;3
+N-3001;Canapé abatible 135x190 blanco;135x190x35;176,50;14;2
+N-3002;Canapé abatible 150x190 blanco;150x190x35;192,00;14;2
+N-4001;Almohada viscoelástica 75 cm;75x40x12;11,90;5;20
+N-4002;Almohada viscoelástica 90 cm;90x40x12;13,40;5;20
+N-5001;Mesa de centro elevable roble;110x55x45;134,00;21;2
