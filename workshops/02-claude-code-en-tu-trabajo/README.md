@@ -44,23 +44,23 @@ con ← →, y con la tecla N se ven las notas para quien presenta.
 | 5 · Pedir bien | 13–16 | 12 min |
 | 6 · Ampliar lo que puede hacer | 17–18 | 6 min |
 | 7 · Reglas de casa | 19 | 4 min |
-| Práctica | 20 | 15 min |
+| Práctica | 20–23 | 15 min |
 | Preguntas | — | 4 min |
 
 ### La práctica (15 min)
 
-Cada persona abre Claude Code en la carpeta del taller y elige uno de los
-ejercicios de la [guía de práctica](guias/01-practica.md):
+Cada persona crea una carpeta vacía (`taller-claude`, en Documentos), la abre
+en Claude Code y elige una de las tres tareas. Cada tarea tiene su diapositiva
+(21 a 23) con los pasos, el encargo para copiar y qué revisar, así que se puede
+hacer solo con la presentación, sin descargar materiales:
 
-- **A · Comparar dos tarifas** de proveedores que llaman distinto a los mismos
-  productos
-- **B · Resumir un procedimiento** de entregas que esconde dos contradicciones
-- **C · Mejorar la respuesta** a una clienta enfadada
-- **D · Tu propia tarea**, sin datos personales
-
-Los materiales de [`practica/`](practica/) son inventados. Las
-[reglas de este taller](AGENTS.md) hacen que Claude haga la tarea, pregunte si
-el encargo es ambiguo y termine con un consejo para pedirlo mejor.
+- **A · Tu semana:** instala el conector de Google Calendar y, solo leyendo, le
+  prepara la semana
+- **B · Tus notas, en orden:** crea notas inventadas, les pone la fecha en el
+  nombre y, con una instrucción escrita en un `AGENTS.md`, las resume por orden
+  de fecha en una sesión nueva
+- **C · Una duda, con fuentes:** busca en internet el derecho de desistimiento
+  de un sofá hecho a medida y cita de dónde sale cada dato
 
 **Quien presenta:** da una vuelta por la sala. El momento bueno es cuando
 alguien encuentra un error en lo que ha hecho Claude. Ahí se entiende lo de

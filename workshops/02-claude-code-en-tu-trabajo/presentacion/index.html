@@ -349,10 +349,34 @@ code{
 .chain.tight .step:not(:last-child)::after{right:-1cqi}
 .step.review{background:var(--marker);border-color:var(--marker);color:var(--marker-ink)}
 .step.review p,.step.review .sn{color:var(--marker-ink)}
-.exercises{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.4cqi}
+.exercises{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:1.4cqi}
 .exercises li{border-top:3px solid var(--ink);padding-top:1cqi;display:flex;flex-direction:column;gap:.4cqi}
 .exercises b{font-family:var(--display);font-size:var(--fs-h3)}
 .exercises span{font-size:var(--fs-small);color:var(--muted)}
+
+/* tareas de la práctica */
+h2.wide{max-width:none}
+.task{display:grid;grid-template-columns:var(--cols,1.45fr 1fr);gap:3cqi;flex:1;min-height:0}
+.how{display:flex;flex-direction:column;gap:1.1cqi;counter-reset:how}
+.how > li{display:grid;grid-template-columns:2.4cqi minmax(0,1fr);column-gap:1cqi;row-gap:.6cqi;align-items:start}
+.how > li::before{counter-increment:how;content:counter(how);font-family:var(--display);font-weight:800;font-size:var(--fs-body);line-height:1.2;color:var(--accent)}
+.how > li > *{grid-column:2}
+.how p{font-size:var(--fs-small);line-height:1.4}
+.prompt{
+  position:relative;
+  background:var(--code-bg);border-left:3px solid var(--accent);border-radius:3px;
+  padding:.8cqi 8cqi .8cqi 1.2cqi;
+}
+.prompt p{font-size:var(--fs-small);line-height:1.45}
+.copy{
+  position:absolute;top:.6cqi;right:.6cqi;
+  font:inherit;font-size:var(--fs-eyebrow);font-weight:700;letter-spacing:.04em;
+  color:var(--accent);background:var(--sheet);border:1px solid var(--accent);border-radius:3px;
+  padding:.25em .7em;cursor:pointer;
+}
+.copy:hover{background:var(--accent-soft)}
+.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.task .bullets li{font-size:var(--fs-small)}
 
 /* cierre */
 .takeaways{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3cqi;flex:1;align-content:center}
@@ -404,7 +428,10 @@ code{
   .slide{display:block;position:static;width:100%;aspect-ratio:auto;background-size:20px 20px}
   .slide-inner{height:auto}
   .bar{display:none}
-  .cols,.cover-body,.compare,.chain,.takeaways,.checklist,.agenda,.cards,.models,.fill,.exercises,.flowcase{grid-template-columns:1fr}
+  .cols,.cover-body,.compare,.chain,.takeaways,.checklist,.agenda,.cards,.models,.fill,.exercises,.flowcase,.task{grid-template-columns:1fr}
+  .how > li{grid-template-columns:20px minmax(0,1fr)}
+  .prompt{padding:12px 12px 12px 14px}
+  .copy{position:static;justify-self:start;margin-top:8px}
   .xl th,.xl td{padding:4px 6px}
   .step:not(:last-child)::after,.chain.tight .step:not(:last-child)::after{content:"↓";right:50%;top:auto;bottom:-14px;transform:translateX(50%);font-size:14px}
   .chain{gap:20px}
@@ -441,6 +468,7 @@ code{
   }
   .slide:last-child{break-after:auto;page-break-after:auto}
   .show-notes .slide.is-current .notes{display:none}
+  .copy{display:none}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 @media (prefers-reduced-motion: reduce){
@@ -470,7 +498,7 @@ code{
               <li><span class="q">2×</span><span class="n">sitios donde trabaja: local y nube</span></li>
               <li><span class="q">5×</span><span class="n">ingredientes de un buen encargo</span></li>
               <li><span class="q">3×</span><span class="n">formas de ampliarlo</span></li>
-              <li><span class="q">15′</span><span class="n">de práctica con materiales inventados</span></li>
+              <li><span class="q">15′</span><span class="n">de práctica, con tres tareas</span></li>
             </ol>
           </div>
         </div>
@@ -622,18 +650,18 @@ code{
             <p class="eg">Por ejemplo: poner 200 referencias en el mismo formato.</p>
             <div class="cost"><div class="meter"><span style="--w:10%"></span></div><small>precio 1×</small></div>
           </div>
-          <div class="model">
+          <div class="model default">
+            <span class="tag badge">Por defecto</span>
             <span class="label">La furgoneta</span>
             <h3>Sonnet 5.5</h3>
-            <p>La mejor mezcla de velocidad e inteligencia. Rápido y resolutivo para el día a día.</p>
+            <p>El que viene de serie. La mejor mezcla de velocidad e inteligencia: rápido y resolutivo para el día a día.</p>
             <p class="eg">Por ejemplo: resumir un documento o redactar un correo.</p>
             <div class="cost"><div class="meter"><span style="--w:20%"></span></div><small>precio 2×</small></div>
           </div>
-          <div class="model default">
-            <span class="tag badge">Por defecto</span>
+          <div class="model">
             <span class="label">El camión de reparto</span>
             <h3>Opus 5.5</h3>
-            <p>El que viene de serie. Anthropic recomienda empezar por él: sirve para casi todo, también para tareas largas.</p>
+            <p>Un paso más de inteligencia. Para lo que a Sonnet se le queda corto, también para tareas largas.</p>
             <p class="eg">Por ejemplo: comparar dos tarifas y recomendar un proveedor.</p>
             <div class="cost"><div class="meter"><span style="--w:40%"></span></div><small>precio 4×</small></div>
           </div>
@@ -647,7 +675,7 @@ code{
         </div>
         <p class="small muted">No mandas un camión de mudanzas a entregar un cojín, ni una moto a llevar un sofá. · Precio: por uso en la API de Anthropic, tomando Haiku como referencia. En tu plan se nota en que la cuota se gasta antes.</p>
       </div>
-      <aside class="notes">Fuente: platform.claude.com/docs/en/models/overview (29 sep 2026). Precios de entrada por millón de tokens: Haiku 1 $, Sonnet 2 $, Opus 4 $, Fable 10 $. Opus 5.5 es el modelo por defecto de Claude Code en todos los planes. Fable nunca es el de por defecto y, según el plan, se cobra con créditos de uso: Claude Code avisa antes.</aside>
+      <aside class="notes">Fuente: platform.claude.com/docs/en/models/overview (29 sep 2026). Precios de entrada por millón de tokens: Haiku 1 $, Sonnet 2 $, Opus 4 $, Fable 10 $. Sonnet 5.5 es el modelo por defecto. Fable nunca es el de por defecto y, según el plan, se cobra con créditos de uso: Claude Code avisa antes.</aside>
     </section>
 
     <!-- 7 · Cómo elegir -->
@@ -659,9 +687,9 @@ code{
           <div class="stack">
             <span class="label">La regla</span>
             <ul class="bullets">
-              <li><b>Empieza por el que viene</b> (Opus 5.5). Para casi todo, es el adecuado.</li>
-              <li><b>¿Tarea mecánica y repetitiva?</b> Baja a Sonnet o Haiku: irá más rápido y gastará menos.</li>
-              <li><b>¿Se equivoca en algo difícil?</b> Primero, dale mejor contexto. Después, que piense más. Fable, solo para lo muy difícil.</li>
+              <li><b>Empieza por el que viene</b> (Sonnet 5.5). Para el día a día, es el adecuado.</li>
+              <li><b>¿Tarea complicada?</b> Sube a Opus: piensa más a fondo y aguanta mejor las tareas largas. Para lo mecánico y repetitivo, Haiku.</li>
+              <li><b>¿Se equivoca en algo difícil?</b> Primero, dale mejor contexto. Después, que piense más o súbelo a Opus. Fable, solo para lo muy difícil.</li>
             </ul>
             <div class="panel mark">
               <p><b>Cambiar de modelo no arregla un mal encargo.</b> Casi siempre falla lo que le hemos dado, no el modelo.</p>
@@ -806,7 +834,8 @@ code{
               <tr><th scope="row">Hace falta GitHub</th><td>No</td><td>Sí</td></tr>
               <tr><th scope="row">Si cierras el portátil</th><td>Se para</td><td>Sigue</td></tr>
               <tr><th scope="row">Darle un archivo con <code>@</code></th><td>Sí</td><td>No</td></tr>
-              <tr><th scope="row">Conectores y plugins del botón +</th><td>Sí</td><td>No</td></tr>
+              <tr><th scope="row">Conectores (Drive, Calendar…)</th><td>Sí</td><td>Sí</td></tr>
+              <tr><th scope="row">Plugins del botón +</th><td>Sí</td><td>No</td></tr>
               <tr><th scope="row">Modos de permiso</th><td>Todos</td><td>Accept edits, Plan y Auto</td></tr>
               <tr><th scope="row">Gasta de tu plan</th><td colspan="2">Sí, de la misma cuota</td></tr>
             </tbody>
@@ -818,12 +847,13 @@ code{
             </div>
             <div class="panel">
               <span class="label">Nube</span>
-              <p class="small">Tareas largas sobre repositorios compartidos, que siguen mientras haces otra cosa. Lo normal en el equipo de Data.</p>
+              <p class="small">Para preguntas rápidas, de usar y tirar, desde el móvil o el escritorio. Y para tareas que quieres que sigan en segundo plano mientras haces otra cosa.</p>
+              <p class="small"><b>Ojo:</b> si va a crear un informe o un archivo, asegúrate de que lo guarda bien en algún sitio: GitHub, Drive o donde sea. Si no, se queda dentro de la sesión y puede perderse.</p>
             </div>
           </div>
         </div>
       </div>
-      <aside class="notes">Fuente: code.claude.com/docs/en/desktop y /claude-code-on-the-web. Las sesiones en la nube están en los planes Pro, Max y Team, y en Enterprise con ciertos puestos; la organización tiene que tenerlas activadas.</aside>
+      <aside class="notes">Fuente: code.claude.com/docs/en/desktop y /claude-code-on-the-web. Las sesiones en la nube están en los planes Pro, Max y Team, y en Enterprise con ciertos puestos; la organización tiene que tenerlas activadas. En la nube funcionan los conectores que tienes autorizados en claude.ai, pero no los plugins que instalas desde la app de escritorio (code.claude.com/docs/en/desktop y /mcp). El ordenador de la sesión se pausa con los archivos guardados, pero puede borrarse después: entonces vuelve la conversación, no los archivos.</aside>
     </section>
 
     <!-- 13 · La receta -->
@@ -865,7 +895,7 @@ code{
           <li><b>Cómo lo quieres</b>Extensión, tono y formato, sin que tenga que adivinar.</li>
         </ul>
       </div>
-      <aside class="notes">Este ejemplo es el ejercicio C de la práctica, con materiales inventados. Si queréis verlo en directo: pedir las dos versiones en dos sesiones distintas y comparar.</aside>
+      <aside class="notes">El ejemplo usa una clienta inventada. Si queréis verlo en directo: pedir las dos versiones en dos sesiones distintas y comparar.</aside>
     </section>
 
     <!-- 15 · En conversación -->
@@ -875,7 +905,7 @@ code{
         <h2>No es un formulario: es una conversación</h2>
         <div class="cols">
           <ul class="bullets">
-            <li><b>Pídele que pregunte primero.</b> "Antes de empezar, pregúntame lo que necesites." Te descubre lo que no habías pensado.</li>
+            <li><b>Pídele que pregunte primero.</b> "Antes de empezar, pregúntame lo que necesites." Te descubre lo que no habías pensado. Para ir más a fondo, prueba la skill <code>/grill-me</code>: te pregunta por rondas y te propone una respuesta para cada pregunta.</li>
             <li><b>Primero el plan, después el trabajo.</b> En modo <b>Plan</b> lee y te propone cómo lo haría, sin tocar nada. Lo corriges, y entonces lo hace.</li>
             <li><b>Corrige sobre la marcha.</b> Puedes escribirle mientras trabaja ("los precios, sin IVA") o pararlo con el botón de parar.</li>
             <li><b>Si se ha liado, empieza de cero</b>, con un encargo mejor. No hace falta arreglarlo a base de correcciones.</li>
@@ -893,7 +923,7 @@ code{
           </div>
         </div>
       </div>
-      <aside class="notes">El modo se elige en el selector que hay junto al botón de enviar. Plan es muy útil para cosas grandes: ves el enfoque antes de que cambie nada. Las preguntas del ejemplo son justo las trampas del ejercicio A.</aside>
+      <aside class="notes">El modo se elige en el selector que hay junto al botón de enviar. Plan es muy útil para cosas grandes: ves el enfoque antes de que cambie nada. La skill <code>/grill-me</code> viene en el plugin mattpocock-skills, que está en el catálogo oficial de Anthropic (+ → Plugins → Add plugin; las skills y los plugins se ven en el bloque 6). Solo se lanza si la escribes tú, y no se pone a trabajar hasta que le confirmas que ya os habéis entendido. Cada pregunta está redactada para que un «sí» acepte la respuesta que te propone.</aside>
     </section>
 
     <!-- 16 · Revisa siempre -->
@@ -917,7 +947,7 @@ code{
               <li><span>Algo que va a un cliente o a dirección</span><span>Línea a línea</span></li>
             </ol>
             <div class="panel tint">
-              <p class="small">En la práctica hay errores escondidos a propósito: dos contradicciones en un documento y una tarifa con los plazos en semanas. A ver quién los pilla.</p>
+              <p class="small">En la práctica, compara con el original: tu calendario, tus notas y las webs que te cite. Ahí es donde se pillan los errores.</p>
             </div>
           </div>
         </div>
@@ -987,7 +1017,7 @@ code{
               <dt><span class="tag">Manual</span></dt><dd>Te pregunta antes de cambiar un archivo o ejecutar algo. Muy seguro, pero te para a cada paso.</dd>
               <dt><span class="tag solid">Accept edits</span></dt><dd>Cambia archivos sin preguntar y tú lo revisas después. Para lo demás, sí pregunta. <b>Empieza aquí.</b></dd>
               <dt><span class="tag">Plan</span></dt><dd>Lee y propone, pero no cambia nada.</dd>
-              <dt><span class="tag">Auto</span></dt><dd>Decide solo, con comprobaciones de seguridad. Para cuando tengas soltura.</dd>
+              <dt><span class="tag">Auto</span></dt><dd>Decide solo, con comprobaciones de seguridad. Cuando tengas soltura, <b>es lo eficiente.</b></dd>
             </dl>
             <div class="panel mark">
               <p><b>Revisa lo que cambia y lee lo que apruebas.</b> Los cambios se ven en el indicador <code>+12 −1</code> que aparece sobre el chat. Aceptar sin mirar es como firmar el albarán sin mirar el sofá.</p>
@@ -1001,24 +1031,118 @@ code{
     <!-- 20 · Práctica -->
     <section class="slide" data-section="Práctica">
       <div class="slide-inner">
-        <div class="sheet-head"><span><b>Práctica</b> · 15 minutos</span><span class="ref">guias/01-practica.md</span></div>
-        <h2>Ahora tú: encárgale algo de verdad</h2>
+        <div class="sheet-head"><span><b>Práctica</b> · 15 minutos</span><span class="ref">Tres tareas: elige una</span></div>
+        <h2>Ahora tú: pruébalo con una tarea</h2>
         <ol class="chain">
-          <li class="step"><span class="sn">1</span><h3>Abre la carpeta</h3><p>Code → Local → <code>workshops/02-claude-code-en-tu-trabajo</code></p></li>
-          <li class="step"><span class="sn">2</span><h3>Modo Manual</h3><p>Y el modelo que viene por defecto.</p></li>
-          <li class="step"><span class="sn">3</span><h3>Elige un ejercicio</h3><p>El que más se parezca a tu trabajo.</p></li>
-          <li class="step"><span class="sn">4</span><h3>Usa la receta</h3><p>Y dale el archivo con <code>@</code>.</p></li>
-          <li class="step review"><span class="sn">5</span><h3>Revisa</h3><p>¿Se ha inventado algo? ¿Ha pillado las trampas?</p></li>
+          <li class="step"><span class="sn">1</span><h3>Crea una carpeta</h3><p>En Documentos, una carpeta nueva: <code>taller-claude</code>.</p></li>
+          <li class="step"><span class="sn">2</span><h3>Ábrela</h3><p>Code → Local → <b>Select folder</b> → <code>taller-claude</code>.</p></li>
+          <li class="step"><span class="sn">3</span><h3>Modo Manual</h3><p>Y el modelo que viene por defecto.</p></li>
+          <li class="step"><span class="sn">4</span><h3>Elige una tarea</h3><p>Los pasos y el encargo, en las tres diapositivas siguientes.</p></li>
+          <li class="step review"><span class="sn">5</span><h3>Revisa</h3><p>¿Se ha inventado algo? ¿Ha hecho solo lo que le pediste?</p></li>
         </ol>
-        <ul class="exercises">
-          <li><b>A · Comparar tarifas</b><span>Dos proveedores que llaman distinto a los mismos productos.</span></li>
-          <li><b>B · Resumir un procedimiento</b><span>Un procedimiento de entregas con dos contradicciones escondidas.</span></li>
-          <li><b>C · Mejorar una respuesta</b><span>El correo de una clienta enfadada y un borrador flojo.</span></li>
-          <li><b>D · Tu propia tarea</b><span>Algo de tu trabajo, sin datos personales.</span></li>
+        <ul class="exercises" style="--n:3">
+          <li><b>A · Tu semana</b><span>Le conectas tu Google Calendar, solo para leer, y te prepara la semana.</span></li>
+          <li><b>B · Tus notas, en orden</b><span>Crea notas, les pone la fecha en el nombre y le dejas escrito en un AGENTS.md cómo quieres que te las resuma.</span></li>
+          <li><b>C · Una duda, con fuentes</b><span>Busca en internet lo que pregunta un cliente y te dice de dónde sale cada dato.</span></li>
         </ul>
-        <p class="small muted">Todo lo de <code>practica/</code> es inventado. Al terminar, Claude te dará un consejo para pedirlo mejor.</p>
+        <p class="small muted">Copia el encargo y cambia lo que va entre corchetes. Al terminar, pídele: «Dame un consejo para pedírtelo mejor la próxima vez». Si te sobra tiempo, haz otra tarea.</p>
       </div>
-      <aside class="notes">Dar una vuelta por la sala. El momento bueno es cuando alguien encuentra un error en lo que ha hecho Claude: ahí se entiende "revisa siempre". Si alguien acaba pronto, que pruebe a pedir lo mismo mal, en una sola frase, y compare.</aside>
+      <aside class="notes">Las tres tareas se pueden hacer solo con esta presentación: no hace falta descargar materiales. Dar una vuelta por la sala. El momento bueno es cuando alguien encuentra un error en lo que ha hecho Claude: ahí se entiende "revisa siempre". Si alguien acaba pronto, que pida lo mismo mal, en una sola frase, en una sesión nueva, y compare.</aside>
+    </section>
+
+    <!-- 21 · Tarea A -->
+    <section class="slide" data-section="Práctica">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Práctica</b> · Tarea A</span><span class="ref">Conector de Google Calendar · solo lectura</span></div>
+        <h2 class="wide">A · Prepara tu semana con tu calendario</h2>
+        <div class="task">
+          <div class="stack">
+            <span class="label">Pasos</span>
+            <ol class="how">
+              <li><p><b>Instala el conector.</b> Botón <b>+</b> junto a la caja del mensaje → <b>Connectors</b> → <b>Browse connectors</b> → <b>Google Calendar</b> → <b>Connect</b>. Entra con tu cuenta de Google del trabajo.</p></li>
+              <li><p><b>Copia el encargo</b>, cambia lo que va entre corchetes y envíalo:</p>
+                <div class="prompt"><button class="copy" type="button">Copiar</button><p>Soy [tu puesto] y quiero preparar mi semana. Mira en mi Google Calendar los eventos de la semana que viene, de lunes a viernes. Solo léelos: no crees, cambies ni borres nada. Crea en esta carpeta un archivo mi-semana.txt con las reuniones de cada día (hora y título), los huecos libres de una hora o más entre las [9:00] y las [18:00], y los días con más de cuatro horas de reuniones. Antes de empezar, pregúntame lo que necesites.</p></div></li>
+              <li><p><b>Lee cada permiso que te pida.</b> Acepta lo que lea el calendario. Si quiere crear, cambiar o borrar un evento, dile que no.</p></li>
+            </ol>
+          </div>
+          <div class="stack">
+            <span class="label">Revisa</span>
+            <ul class="bullets">
+              <li><b>Compara dos días</b> con tu calendario: ¿están todas las reuniones, y a su hora?</li>
+              <li><b>¿Los huecos libres lo son?</b> Comprueba uno.</li>
+              <li><b>¿Ha intentado cambiar algo?</b> Le dijiste que solo leyera.</li>
+            </ul>
+            <p class="small muted">¿No aparece Google Calendar en la lista? Avisa: puede que haya que activarlo para la empresa.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Fuente: code.claude.com/docs/en/desktop (Connectors). Si el menú del botón + enseña Add connectors en vez de Connectors, es lo mismo. En los planes Team y Enterprise, puede que un Owner tenga que activar el conector en Organization settings &gt; Connectors. Los conectores se gestionan y se desconectan en Settings &gt; Connectors. Es el bloque 6 en la práctica: un conector es una llave, y aquí se usa solo para leer.</aside>
+    </section>
+
+    <!-- 22 · Tarea B -->
+    <section class="slide" data-section="Práctica">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Práctica</b> · Tarea B</span><span class="ref">Archivos de tu carpeta · AGENTS.md</span></div>
+        <h2 class="wide">B · Ordena tus notas y enséñale a resumirlas</h2>
+        <div class="task" style="--cols:1.8fr 1fr">
+          <div class="stack">
+            <span class="label">Pasos</span>
+            <ol class="how">
+              <li><p><b>Crea las notas</b>, inventadas y desordenadas, como las de una reunión:</p>
+                <div class="prompt"><button class="copy" type="button">Copiar</button><p>Crea una carpeta notas con tres notas inventadas y desordenadas de reuniones de una tienda de muebles: nota-a.txt, nota-b.txt y nota-c.txt. Cada una de un día distinto, con su fecha en el texto y tareas pendientes. Sin nombres reales.</p></div></li>
+              <li><p><b>Ponles la fecha en el nombre</b>, para que la carpeta las ordene sola:</p>
+                <div class="prompt"><button class="copy" type="button">Copiar</button><p>Cambia el nombre de cada nota de la carpeta notas para que empiece por la fecha de la reunión, en año-mes-día y con el tema detrás: por ejemplo, <span style="white-space:nowrap">2026-11-03-almacen.txt</span>. No cambies lo que hay dentro.</p></div></li>
+              <li><p><b>Déjale la instrucción escrita</b> en un <code>AGENTS.md</code>, que lee al abrir la carpeta:</p>
+                <div class="prompt"><button class="copy" type="button">Copiar</button><p>Apunta en el AGENTS.md de esta carpeta (créalo si no existe) que, cuando te pida «Resúmeme las notas», resumas todas las de la carpeta notas, de la más antigua a la más reciente, con la fecha delante de cada una, así: martes 3 de noviembre.</p></div></li>
+              <li><p><b>Compruébalo en una sesión nueva:</b> <b>+ New</b> en la barra lateral, la misma carpeta, y escribe solo «Resúmeme las notas».</p></li>
+            </ol>
+          </div>
+          <div class="stack">
+            <span class="label">Revisa</span>
+            <ul class="bullets">
+              <li><b>Abre la carpeta notas</b> en tu ordenador: ¿salen por orden de fecha? ¿Ha cambiado solo los nombres?</li>
+              <li><b>Abre el AGENTS.md:</b> es un texto normal. ¿Dice lo que le pediste? Lo puedes cambiar tú.</li>
+              <li><b>En la sesión nueva, ¿salen en orden y con su fecha</b> sin que se lo repitas?</li>
+              <li><b>¿Hay en el resumen alguna tarea que no esté en las notas?</b> Entonces se la ha inventado.</li>
+            </ul>
+            <div class="panel tint">
+              <p class="small"><b>Por qué funciona.</b> Cada sesión empieza de cero, pero al abrir la carpeta lee su <code>AGENTS.md</code>. Lo que quieras que haga siempre igual, déjalo escrito ahí.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">Fuente: code.claude.com/docs/en/memory. Claude Code lee el AGENTS.md de la carpeta al empezar cada sesión cuando no hay un CLAUDE.md, como en esta carpeta nueva (bloque 3). Por eso el encargo dice «apúntalo en el AGENTS.md»: si solo se le dice «recuérdalo», puede guardarlo en su memoria automática, que también vale pero no se ve tan fácil (con /memory se ve y se edita). El AGENTS.md se abre, se corrige a mano y se le puede pasar a un compañero. La fecha en año-mes-día es lo que hace que el explorador de archivos ordene las notas por fecha. Es la otra cara de «no recuerda entre conversaciones» del bloque 1.</aside>
+    </section>
+
+    <!-- 23 · Tarea C -->
+    <section class="slide" data-section="Práctica">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Práctica</b> · Tarea C</span><span class="ref">Búsqueda en internet · fuentes</span></div>
+        <h2 class="wide">C · Investiga la duda de un cliente, con fuentes</h2>
+        <div class="task">
+          <div class="stack">
+            <span class="label">Pasos</span>
+            <ol class="how">
+              <li><p><b>Copia el encargo</b>, cambia lo que va entre corchetes y envíalo:</p>
+                <div class="prompt"><button class="copy" type="button">Copiar</button><p>Trabajo en [tu departamento] de una tienda de muebles. Un cliente pregunta si puede devolver un sofá que compró por internet y que se hizo a medida. Busca en internet qué dice la ley española sobre el derecho de desistimiento en las compras online: el plazo, desde cuándo se cuenta y qué productos no lo tienen. Usa fuentes oficiales, como el BOE o las webs de consumo de las administraciones. Crea en esta carpeta desistimiento.txt con un resumen en cinco puntos, una respuesta para el cliente en lenguaje sencillo y el enlace de donde sale cada dato. Si algo no está claro, dímelo.</p></div></li>
+              <li><p><b>Lee cada permiso que te pida.</b> Si quiere buscar o abrir una web, mira cuál es antes de aceptar.</p></li>
+            </ol>
+          </div>
+          <div class="stack">
+            <span class="label">Revisa</span>
+            <ul class="bullets">
+              <li><b>Abre dos enlaces</b> y comprueba que dicen lo que dice Claude.</li>
+              <li><b>¿Ha visto la excepción?</b> Lo que se hace a medida o personalizado no tiene derecho de desistimiento.</li>
+              <li><b>¿Son fuentes oficiales</b>, o blogs y foros?</li>
+              <li><b>¿Lo entendería el cliente</b> a la primera?</li>
+            </ul>
+            <div class="panel mark">
+              <p class="small"><b>No es asesoramiento legal.</b> Antes de contestar a un cliente de verdad, que lo valide quien lleve el tema en la empresa.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">La trampa: el plazo general es de 14 días naturales desde que el cliente recibe el producto, pero lo que se hace según las indicaciones del cliente o claramente personalizado no tiene derecho de desistimiento (Real Decreto Legislativo 1/2007, artículos 102 a 104). Lo que se aprende: pedirle las fuentes y abrirlas. Que suene convincente no quiere decir que sea verdad (bloque 5).</aside>
     </section>
 
   </main>
@@ -1028,7 +1152,7 @@ code{
     <div class="progress" aria-hidden="true"><span id="progress"></span></div>
     <div class="controls">
       <button class="btn" id="prev" type="button" aria-label="Diapositiva anterior">←</button>
-      <span class="count" id="count" aria-live="polite">1 / 20</span>
+      <span class="count" id="count" aria-live="polite">1 / 23</span>
       <button class="btn" id="next" type="button" aria-label="Diapositiva siguiente">→</button>
       <button class="btn" id="notes" type="button" aria-pressed="false" title="Notas para quien presenta (N)">Notas</button>
     </div>
@@ -1084,6 +1208,26 @@ code{
     var dx = e.changedTouches[0].clientX - startX;
     if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
     startX = null;
+  });
+
+  function copyText(text){
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    return new Promise(function(resolve, reject){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(ta);
+      if (ok) { resolve(); } else { reject(); }
+    });
+  }
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest && e.target.closest('.copy');
+    if (!btn) return;
+    var text = btn.parentNode.querySelector('p').textContent.replace(/\s+/g, ' ').trim();
+    copyText(text).then(function(){ btn.textContent = 'Copiado'; }, function(){ btn.textContent = 'Selecciónalo y cópialo'; });
+    setTimeout(function(){ btn.textContent = 'Copiar'; }, 2000);
   });
 
   window.addEventListener('hashchange', function(){ show(fromHash(), false); });
