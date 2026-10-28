@@ -223,6 +223,37 @@ code{
 .card code,.panel code{white-space:nowrap}
 .card .where{font-family:var(--mono);font-size:var(--fs-eyebrow);color:var(--muted);margin-top:auto;padding-top:.6cqi;border-top:1px solid var(--rule)}
 
+/* la app y el modelo */
+.duo{display:grid;grid-template-columns:minmax(0,1fr) 17cqi minmax(0,1fr);gap:1.4cqi;flex:1;min-height:0}
+.side{border-radius:6px;padding:1.5cqi 1.8cqi;display:flex;flex-direction:column;gap:1.1cqi}
+.side.app{border:1.5px solid var(--ink);background:var(--sheet)}
+.side.brain{border:1.5px solid var(--accent);background:var(--accent-soft)}
+.side .muted{margin-top:auto}
+.side-head{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:1.2cqi;align-items:center}
+.side-head svg{grid-row:span 2;width:4.4cqi;height:4.4cqi;color:var(--accent)}
+.side-head h3{font-size:2.2cqi}
+.hands{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.2cqi 1.4cqi;align-items:center;align-content:center;flex:1}
+.hands dt{font-weight:700;font-size:var(--fs-small)}
+.hands dd{margin:0;display:flex;flex-wrap:wrap;gap:.5cqi}
+.chip{font-family:var(--mono);font-size:var(--fs-eyebrow);line-height:1.3;padding:.25em .6em;border-radius:3px;background:var(--code-bg);white-space:nowrap}
+.chip.new{background:color-mix(in srgb, var(--marker) 38%, var(--sheet))}
+.chip.ask{font-family:var(--body);font-weight:700;background:var(--marker);color:var(--marker-ink)}
+.picker{display:flex;flex-direction:column;gap:.5cqi}
+.picker li{
+  display:flex;justify-content:space-between;align-items:center;gap:1cqi;
+  font-size:var(--fs-small);line-height:1.3;padding:.4cqi 1cqi;
+  border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);border-radius:3px;background:var(--sheet);
+}
+.picker li.on{border:1.5px solid var(--accent);font-weight:700}
+.wires{display:flex;flex-direction:column;justify-content:center;gap:2.4cqi}
+.wire{display:flex;flex-direction:column;gap:.4cqi;font-size:var(--fs-small);line-height:1.3;text-align:center}
+.wire .line{display:block;position:relative;height:2px;margin:.4cqi 1cqi;background:var(--accent)}
+.wire .line::after{content:"";position:absolute;top:50%;transform:translateY(-50%);border-block:.7cqi solid transparent}
+.wire.out .line::after{right:-.2cqi;border-left:1.2cqi solid var(--accent)}
+.wire.back .line::after{left:-.2cqi;border-right:1.2cqi solid var(--accent)}
+.loop{font-size:var(--fs-small);color:var(--muted);text-align:center}
+.loop span{font-family:var(--mono);color:var(--accent);font-weight:600}
+
 /* modelos */
 .models{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.6cqi;flex:1;min-height:0}
 .model{
@@ -428,7 +459,12 @@ h2.wide{max-width:none}
   .slide{display:block;position:static;width:100%;aspect-ratio:auto;background-size:20px 20px}
   .slide-inner{height:auto}
   .bar{display:none}
-  .cols,.cover-body,.compare,.chain,.takeaways,.checklist,.agenda,.cards,.models,.fill,.exercises,.flowcase,.task{grid-template-columns:1fr}
+  .cols,.cover-body,.compare,.chain,.takeaways,.checklist,.agenda,.cards,.models,.fill,.exercises,.flowcase,.task,.duo{grid-template-columns:1fr}
+  .side{padding:16px}
+  .side-head svg{width:32px;height:32px}
+  .side-head h3{font-size:1.2rem}
+  .wires{gap:12px}
+  .wire .line{display:none}
   .how > li{grid-template-columns:20px minmax(0,1fr)}
   .prompt{padding:12px 12px 12px 14px}
   .copy{position:static;justify-self:start;margin-top:8px}
@@ -557,7 +593,56 @@ h2.wide{max-width:none}
       <aside class="notes">La imagen que sirve para todo el taller: alguien nuevo, muy capaz, que cada mañana llega sin recordar nada. Lo que no le cuentes o no le dejes por escrito, no lo sabe. Y tú sigues decidiendo: propone y hace, pero lo revisas tú.</aside>
     </section>
 
-    <!-- 4 · Un ejemplo de principio a fin -->
+    <!-- 4 · La app y el modelo -->
+    <section class="slide" data-section="1 · Qué es">
+      <div class="slide-inner">
+        <div class="sheet-head"><span><b>Bloque 1</b> · Qué es</span><span class="ref">La app y el modelo</span></div>
+        <h2 class="wide">Claude Code pone las manos. El modelo, la cabeza.</h2>
+        <div class="duo">
+          <div class="side app">
+            <div class="side-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
+              <span class="label">En tu portátil · la app</span>
+              <h3>Claude Code</h3>
+            </div>
+            <dl class="hands">
+              <dt>Ve</dt><dd><span class="chip">casos.xlsx</span><span class="chip">tarifa.pdf</span><span class="chip">notas.docx</span></dd>
+              <dt>Usa</dt><dd><span class="chip">Drive</span><span class="chip">Calendar</span><span class="chip">Zoho CRM</span></dd>
+              <dt>Escribe</dt><dd><span class="chip new">resumen.docx</span><span class="chip new">casos.xlsx</span></dd>
+              <dt>Pregunta</dt><dd><span class="chip ask">¿Puedo editar casos.xlsx?</span></dd>
+            </dl>
+            <p class="small muted">Hace las cosas, pero no decide cuáles.</p>
+          </div>
+          <div class="wires">
+            <div class="wire out"><span class="label">Ida</span><span>Tu encargo y lo que ha leído</span><i class="line" aria-hidden="true"></i></div>
+            <div class="wire back"><i class="line" aria-hidden="true"></i><span class="label">Vuelta</span><span>"Abre tarifa.pdf", o la respuesta</span></div>
+            <p class="loop"><span aria-hidden="true">↻</span> Y otra vez, hasta terminar</p>
+          </div>
+          <div class="side brain">
+            <div class="side-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+              <span class="label">En los servidores de Anthropic</span>
+              <h3>El modelo</h3>
+            </div>
+            <ul class="picker" aria-label="Modelos que puedes elegir">
+              <li>Haiku 4.5</li>
+              <li class="on">Sonnet 5.5 <span class="tag solid">de serie</span></li>
+              <li>Opus 5.5</li>
+              <li>Fable 5.1</li>
+            </ul>
+            <p class="small muted">Lee, piensa y decide el siguiente paso. No ve tu portátil: solo lo que la app le envía.</p>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li><b>Mismos modelos, otra app</b>El chat de claude.ai usa los mismos modelos. Lo que cambia es la app: Claude Code, además, trabaja en tu carpeta.</li>
+          <li><b>Cambias la cabeza, no las manos</b>Con <code>/model</code> eliges otro modelo y la app sigue igual. Cuál elegir, en el bloque 2.</li>
+          <li><b>Lo que lee, viaja</b>Todo lo que la app le pasa al modelo sale de tu portátil. Por eso, ni contraseñas ni datos de clientes (bloque 7).</li>
+        </ul>
+      </div>
+      <aside class="notes">Esta separación ordena el resto del taller: el bloque 2 es elegir la cabeza; el 3, lo que la app le pone delante (el contexto); el 4, dónde están las manos (tu portátil o un ordenador de Anthropic), y el 6, darle más manos. El modelo no recuerda nada entre una ida y la siguiente: en cada viaje la app le vuelve a enviar la conversación entera. Una tarea normal hace muchos viajes, y cada uno gasta cuota.</aside>
+    </section>
+
+    <!-- 5 · Un ejemplo de principio a fin -->
     <section class="slide" data-section="1 · Qué es">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 1</b> · Qué es</span><span class="ref">Un ejemplo de principio a fin</span></div>
@@ -605,7 +690,7 @@ h2.wide{max-width:none}
       <aside class="notes">Los pasos, contados: 1) Abre el Excel y ve qué hay: dos columnas y 120 casos. 2) "Tiempo abierto" tiene dos lecturas (hasta hoy, o hasta que se cerró): un buen agente pregunta antes de inventar. 3) Pide al conector de Zoho la fecha de creación y el estado de esos casos; trae como mucho 200 por consulta, así que con más va en tandas. 4) Resta la fecha de creación a la de hoy y aparta los cerrados y los que no existen. 5) Escribe la columna en tu Excel, nunca en Zoho: el conector solo lee. 6) Repasa unas filas y te cuenta qué no ha encontrado. En el Excel no hay datos de clientes, solo número de caso y responsable. Números y nombres inventados. Pregunta a la sala qué tarea suya tiene esta forma: un listado, una herramienta y una cuenta.</aside>
     </section>
 
-    <!-- 5 · Qué es el contexto -->
+    <!-- 6 · Qué es el contexto -->
     <section class="slide" data-section="1 · Qué es">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 1</b> · Qué es</span><span class="ref">El contexto</span></div>
@@ -637,7 +722,7 @@ h2.wide{max-width:none}
       <aside class="notes">Volver a la imagen de la persona nueva con amnesia: el contexto es lo que le pones delante esa mañana. La memoria automática existe (guarda preferencias y correcciones), pero no sustituye a darle el material.</aside>
     </section>
 
-    <!-- 6 · Los modelos -->
+    <!-- 7 · Los modelos -->
     <section class="slide" data-section="2 · Los modelos">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 2</b> · Los modelos</span><span class="ref">La familia Claude, septiembre de 2026</span></div>
@@ -678,7 +763,7 @@ h2.wide{max-width:none}
       <aside class="notes">Fuente: platform.claude.com/docs/en/models/overview (29 sep 2026). Precios de entrada por millón de tokens: Haiku 1 $, Sonnet 2 $, Opus 4 $, Fable 10 $. Sonnet 5.5 es el modelo por defecto. Fable nunca es el de por defecto y, según el plan, se cobra con créditos de uso: Claude Code avisa antes.</aside>
     </section>
 
-    <!-- 7 · Cómo elegir -->
+    <!-- 8 · Cómo elegir -->
     <section class="slide" data-section="2 · Los modelos">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 2</b> · Los modelos</span><span class="ref">/model · /effort</span></div>
@@ -712,7 +797,7 @@ h2.wide{max-width:none}
     </section>
 
 
-    <!-- 8 · Cómo se llena -->
+    <!-- 9 · Cómo se llena -->
     <section class="slide" data-section="3 · El contexto">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 3</b> · El contexto</span><span class="ref">Trabajando en local</span></div>
@@ -749,7 +834,7 @@ h2.wide{max-width:none}
       <aside class="notes">El 30 % es una recomendación de la casa, no un límite de Claude Code: aunque quepa mucho, cuanto más lleno va el contexto, más se diluye lo importante. Si se llena del todo, Claude Code resume la conversación él solo para seguir trabajando, y en ese resumen se pierde detalle. /compact hace ese resumen a propósito cuando quieres seguir con la misma tarea. El AGENTS.md es lo que vimos en el taller 1: instrucciones que se cargan siempre.</aside>
     </section>
 
-    <!-- 9 · Mantenerlo limpio -->
+    <!-- 10 · Mantenerlo limpio -->
     <section class="slide" data-section="3 · El contexto">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 3</b> · El contexto</span><span class="ref">/clear · /compact</span></div>
@@ -768,7 +853,7 @@ h2.wide{max-width:none}
       <aside class="notes">Un documento viejo que contradice al nuevo no es neutro: Claude lo lee y le hace caso. Por eso "solo la versión buena". Sobre el AGENTS.md: Claude Code lo lee por su cuenta cuando en esa carpeta, o en las de encima, no hay un CLAUDE.md (desde la versión 2.1.277).</aside>
     </section>
 
-    <!-- 10 · Dónde se usa -->
+    <!-- 11 · Dónde se usa -->
     <section class="slide" data-section="4 · Local o nube">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 4</b> · Local o nube</span><span class="ref">Dónde se usa</span></div>
@@ -787,7 +872,7 @@ h2.wide{max-width:none}
       <aside class="notes">En la app hay otras pestañas además de Code (Chat y Cowork): hoy solo usamos Code. Si preguntan por Cowork, queda para otro día.</aside>
     </section>
 
-    <!-- 11 · Local o nube -->
+    <!-- 12 · Local o nube -->
     <section class="slide" data-section="4 · Local o nube">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 4</b> · Local o nube</span><span class="ref">Pestaña Code → Local · Cloud</span></div>
@@ -821,7 +906,7 @@ h2.wide{max-width:none}
       <aside class="notes">Hay más opciones (SSH, WSL) para perfiles técnicos: no hacen falta hoy. Una sesión local también se puede seguir desde el móvil con Remote Control, pero sigue trabajando en el portátil.</aside>
     </section>
 
-    <!-- 12 · Cuál uso -->
+    <!-- 13 · Cuál uso -->
     <section class="slide" data-section="4 · Local o nube">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 4</b> · Local o nube</span><span class="ref">Cuál uso</span></div>
@@ -856,7 +941,7 @@ h2.wide{max-width:none}
       <aside class="notes">Fuente: code.claude.com/docs/en/desktop y /claude-code-on-the-web. Las sesiones en la nube están en los planes Pro, Max y Team, y en Enterprise con ciertos puestos; la organización tiene que tenerlas activadas. En la nube funcionan los conectores que tienes autorizados en claude.ai, pero no los plugins que instalas desde la app de escritorio (code.claude.com/docs/en/desktop y /mcp). El ordenador de la sesión se pausa con los archivos guardados, pero puede borrarse después: entonces vuelve la conversación, no los archivos.</aside>
     </section>
 
-    <!-- 13 · La receta -->
+    <!-- 14 · La receta -->
     <section class="slide" data-section="5 · Pedir bien">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">La receta</span></div>
@@ -873,7 +958,7 @@ h2.wide{max-width:none}
       <aside class="notes">No hace falta escribir bonito ni usar palabras mágicas. Hace falta lo que le dirías a una persona nueva: quién, para qué, qué, con qué, cómo y cuándo está bien. La plantilla está en la chuleta (guias/02-chuleta.md).</aside>
     </section>
 
-    <!-- 14 · Antes y después -->
+    <!-- 15 · Antes y después -->
     <section class="slide" data-section="5 · Pedir bien">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">Antes y después</span></div>
@@ -898,7 +983,7 @@ h2.wide{max-width:none}
       <aside class="notes">El ejemplo usa una clienta inventada. Si queréis verlo en directo: pedir las dos versiones en dos sesiones distintas y comparar.</aside>
     </section>
 
-    <!-- 15 · En conversación -->
+    <!-- 16 · En conversación -->
     <section class="slide" data-section="5 · Pedir bien">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">Modo Plan</span></div>
@@ -926,7 +1011,7 @@ h2.wide{max-width:none}
       <aside class="notes">El modo se elige en el selector que hay junto al botón de enviar. Plan es muy útil para cosas grandes: ves el enfoque antes de que cambie nada. La skill <code>/grill-me</code> viene en el plugin mattpocock-skills, que está en el catálogo oficial de Anthropic (+ → Plugins → Add plugin; las skills y los plugins se ven en el bloque 6). Solo se lanza si la escribes tú, y no se pone a trabajar hasta que le confirmas que ya os habéis entendido. Cada pregunta está redactada para que un «sí» acepte la respuesta que te propone.</aside>
     </section>
 
-    <!-- 16 · Revisa siempre -->
+    <!-- 17 · Revisa siempre -->
     <section class="slide" data-section="5 · Pedir bien">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 5</b> · Pedir bien</span><span class="ref">Revisar</span></div>
@@ -955,7 +1040,7 @@ h2.wide{max-width:none}
       <aside class="notes">La idea que más importa del taller después de la del contexto. Claude prepara, tú decides. Si algo sale mal, no vale "lo ha dicho la IA".</aside>
     </section>
 
-    <!-- 17 · Ampliarlo -->
+    <!-- 18 · Ampliarlo -->
     <section class="slide" data-section="6 · Ampliarlo">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 6</b> · Ampliarlo</span><span class="ref">Botón + junto a la caja del mensaje</span></div>
@@ -971,7 +1056,7 @@ h2.wide{max-width:none}
       <aside class="notes">Las skills y los plugins activados en tu cuenta de claude.ai también llegan a Claude Code. Las skills de Excel, Word, PowerPoint y PDF son de Anthropic: si están activadas en tu cuenta, Claude las usa solo cuando le pides uno de esos archivos.</aside>
     </section>
 
-    <!-- 18 · Con cuidado -->
+    <!-- 19 · Con cuidado -->
     <section class="slide" data-section="6 · Ampliarlo">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 6</b> · Ampliarlo</span><span class="ref">Antes de instalar</span></div>
@@ -997,7 +1082,7 @@ h2.wide{max-width:none}
       <aside class="notes">No se trata de dar miedo: los conectores y plugins son lo que hace que Claude sea útil de verdad. Se trata de instalar a propósito, no porque sí.</aside>
     </section>
 
-    <!-- 19 · Reglas de casa -->
+    <!-- 20 · Reglas de casa -->
     <section class="slide" data-section="7 · Reglas de casa">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Bloque 7</b> · Reglas de casa</span><span class="ref">Datos y permisos</span></div>
@@ -1028,7 +1113,7 @@ h2.wide{max-width:none}
       <aside class="notes">Lo que Claude lee se envía a los servidores de Anthropic (bloque 4): por eso los datos personales no se le dan. Si hace falta trabajar con un listado de clientes, se quitan antes las columnas personales. Estas reglas salen de las normas comunes del equipo de Data.</aside>
     </section>
 
-    <!-- 20 · Práctica -->
+    <!-- 21 · Práctica -->
     <section class="slide" data-section="Práctica">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Práctica</b> · 15 minutos</span><span class="ref">Tres tareas: elige una</span></div>
@@ -1050,7 +1135,7 @@ h2.wide{max-width:none}
       <aside class="notes">Las tres tareas se pueden hacer solo con esta presentación: no hace falta descargar materiales. Dar una vuelta por la sala. El momento bueno es cuando alguien encuentra un error en lo que ha hecho Claude: ahí se entiende "revisa siempre". Si alguien acaba pronto, que pida lo mismo mal, en una sola frase, en una sesión nueva, y compare.</aside>
     </section>
 
-    <!-- 21 · Tarea A -->
+    <!-- 22 · Tarea A -->
     <section class="slide" data-section="Práctica">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Práctica</b> · Tarea A</span><span class="ref">Conector de Google Calendar · solo lectura</span></div>
@@ -1079,7 +1164,7 @@ h2.wide{max-width:none}
       <aside class="notes">Fuente: code.claude.com/docs/en/desktop (Connectors). Si el menú del botón + enseña Add connectors en vez de Connectors, es lo mismo. En los planes Team y Enterprise, puede que un Owner tenga que activar el conector en Organization settings &gt; Connectors. Los conectores se gestionan y se desconectan en Settings &gt; Connectors. Es el bloque 6 en la práctica: un conector es una llave, y aquí se usa solo para leer.</aside>
     </section>
 
-    <!-- 22 · Tarea B -->
+    <!-- 23 · Tarea B -->
     <section class="slide" data-section="Práctica">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Práctica</b> · Tarea B</span><span class="ref">Archivos de tu carpeta · AGENTS.md</span></div>
@@ -1114,7 +1199,7 @@ h2.wide{max-width:none}
       <aside class="notes">Fuente: code.claude.com/docs/en/memory. Claude Code lee el AGENTS.md de la carpeta al empezar cada sesión cuando no hay un CLAUDE.md, como en esta carpeta nueva (bloque 3). Por eso el encargo dice «apúntalo en el AGENTS.md»: si solo se le dice «recuérdalo», puede guardarlo en su memoria automática, que también vale pero no se ve tan fácil (con /memory se ve y se edita). El AGENTS.md se abre, se corrige a mano y se le puede pasar a un compañero. La fecha en año-mes-día es lo que hace que el explorador de archivos ordene las notas por fecha. Es la otra cara de «no recuerda entre conversaciones» del bloque 1.</aside>
     </section>
 
-    <!-- 23 · Tarea C -->
+    <!-- 24 · Tarea C -->
     <section class="slide" data-section="Práctica">
       <div class="slide-inner">
         <div class="sheet-head"><span><b>Práctica</b> · Tarea C</span><span class="ref">Búsqueda en internet · fuentes</span></div>

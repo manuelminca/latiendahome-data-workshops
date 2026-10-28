@@ -37,21 +37,21 @@ con ← →, y con la tecla N se ven las notas para quien presenta.
 | Bloque | Diapositivas | Tiempo |
 |---|---|---|
 | Portada e índice | 1–2 | 3 min |
-| 1 · Qué es y para qué te sirve | 3–5 | 9 min |
-| 2 · Los modelos | 6–7 | 7 min |
-| 3 · El contexto | 8–9 | 8 min |
-| 4 · Local o en la nube | 10–12 | 7 min |
-| 5 · Pedir bien | 13–16 | 12 min |
-| 6 · Ampliar lo que puede hacer | 17–18 | 6 min |
-| 7 · Reglas de casa | 19 | 4 min |
-| Práctica | 20–23 | 15 min |
+| 1 · Qué es y para qué te sirve | 3–6 | 9 min |
+| 2 · Los modelos | 7–8 | 7 min |
+| 3 · El contexto | 9–10 | 8 min |
+| 4 · Local o en la nube | 11–13 | 7 min |
+| 5 · Pedir bien | 14–17 | 12 min |
+| 6 · Ampliar lo que puede hacer | 18–19 | 6 min |
+| 7 · Reglas de casa | 20 | 4 min |
+| Práctica | 21–24 | 15 min |
 | Preguntas | — | 4 min |
 
 ### La práctica (15 min)
 
 Cada persona crea una carpeta vacía (`taller-claude`, en Documentos), la abre
 en Claude Code y elige una de las tres tareas. Cada tarea tiene su diapositiva
-(21 a 23) con los pasos, el encargo para copiar y qué revisar, así que se puede
+(22 a 24) con los pasos, el encargo para copiar y qué revisar, así que se puede
 hacer solo con la presentación, sin descargar materiales:
 
 - **A · Tu semana:** instala el conector de Google Calendar y, solo leyendo, le
